@@ -26,3 +26,9 @@ class BinaryChromosome(Chromosome):
     def decode_val_to_decimal(self, range_start, range_end) -> float:
         m = len(self.value)
         return range_start + self.binary_arr_to_int(self.value) * (range_end - range_start) / (pow(2, m) - 1)
+
+    def one_point_cross(self, other_binary_chromosome):
+        self_split = np.array_split(self.value, 2)
+        other_split = np.array_split(other_binary_chromosome.value, 2)
+        self.value = np.concatenate((self_split[0], other_split[1]))
+        other_binary_chromosome.value = np.concatenate((other_split[0], self_split[1]))
