@@ -27,12 +27,13 @@ class BinaryChromosome(Chromosome):
         m = len(self.value)
         return range_start + self.binary_arr_to_int(self.value) * (range_end - range_start) / (pow(2, m) - 1)
 
-    def n_point_cross(self, n, other_binary_chromosome):
-        self_split = np.array_split(self.value, n)
-        other_split = np.array_split(other_binary_chromosome.value, n)
+    def n_point_crossover(self, n, other_binary_chromosome):
+        num_of_arr_to_get_after_split = n + 1
+        self_split = np.array_split(self.value, num_of_arr_to_get_after_split)
+        other_split = np.array_split(other_binary_chromosome.value, num_of_arr_to_get_after_split)
         self_array_of_splits = []
         other_array_of_splits = []
-        for i in range(n):
+        for i in range(num_of_arr_to_get_after_split):
             if i % 2 == 0:
                 self_array_of_splits.append(self_split[i])
                 other_array_of_splits.append(other_split[i])
@@ -41,3 +42,6 @@ class BinaryChromosome(Chromosome):
                 other_array_of_splits.append(self_split[i])
         self.value = np.concatenate(self_array_of_splits)
         other_binary_chromosome.value = np.concatenate(other_array_of_splits)
+
+    def uniform_crossover(self, other_binary_chromosome):
+        self.n_point_crossover(len(self.value) - 1, other_binary_chromosome)
