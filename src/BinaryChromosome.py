@@ -3,6 +3,23 @@ import numpy as np
 
 
 class BinaryChromosome(Chromosome):
+    def __init__(self, genes_in_chr, value=None):
+        self.number_of_genes = genes_in_chr
+        if value:
+            self.value = value
+        else:
+            self.value = self.randomize_value()
+
+    def randomize_value(self):
+        return np.random.randint(0, 2, size=self.number_of_genes)
+
+    def show(self):
+        print(self.value)
+
+    def decode_val_to_decimal(self, range_start, range_end) -> float:
+        m = len(self.value)
+        return range_start + self.binary_arr_to_int(self.value) * (range_end - range_start) / (pow(2, m) - 1)
+
     @staticmethod
     def calculate_chain_length(range_start, range_end, acc):
         if range_start > range_end:
@@ -17,20 +34,11 @@ class BinaryChromosome(Chromosome):
             str_bit_number += (str(bit))
         return int(str_bit_number, 2)
 
-    def __init__(self, genes_in_chr):
-        self.value = np.random.randint(0, 2, size=genes_in_chr)
-
-    def show(self):
-        print(self.value)
-
-    def decode_val_to_decimal(self, range_start, range_end) -> float:
-        m = len(self.value)
-        return range_start + self.binary_arr_to_int(self.value) * (range_end - range_start) / (pow(2, m) - 1)
-
-    def n_point_crossover(self, n, other_binary_chromosome):
+    @staticmethod
+    def n_point_crossover(n, first_chromosome, second_chromosome):
         num_of_arr_to_get_after_split = n + 1
-        self_split = np.array_split(self.value, num_of_arr_to_get_after_split)
-        other_split = np.array_split(other_binary_chromosome.value, num_of_arr_to_get_after_split)
+        self_split = np.array_split(first_chromosome.value, num_of_arr_to_get_after_split)
+        other_split = np.array_split(second_chromosome.value, num_of_arr_to_get_after_split)
         self_array_of_splits = []
         other_array_of_splits = []
         for i in range(num_of_arr_to_get_after_split):
@@ -40,8 +48,14 @@ class BinaryChromosome(Chromosome):
             else:
                 self_array_of_splits.append(other_split[i])
                 other_array_of_splits.append(self_split[i])
-        self.value = np.concatenate(self_array_of_splits)
-        other_binary_chromosome.value = np.concatenate(other_array_of_splits)
+        new_first_chromosome_val = np.concatenate(self_array_of_splits)
+        new_second_chromosome_val = np.concatenate(other_array_of_splits)
+        return BinaryChromosome(first_chromosome.number_of_genes, new_first_chromosome_val), BinaryChromosome(
+            second_chromosome.number_of_genes, new_second_chromosome_val)
 
-    def uniform_crossover(self, other_binary_chromosome):
-        self.n_point_crossover(len(self.value) - 1, other_binary_chromosome)
+    @staticmethod
+    def uniform_crossover(first_chromosome, second_chromosome):
+        return BinaryChromosome.n_point_crossover(first_chromosome.number_of_genes - 1, first_chromosome, second_chromosome)
+
+    def inversion(self):
+        return self.inversion_prob
