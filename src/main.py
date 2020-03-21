@@ -13,7 +13,6 @@ if __name__ == '__main__':
 
     pop1 = Population(BinaryChromosome, population_size, chromosome_size, number_of_genes)
     pop1.print_population()
+    pop1.print_decimal_population(a, b)
 
     epochs_number = 10
-
-
