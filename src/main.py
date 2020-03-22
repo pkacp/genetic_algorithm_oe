@@ -16,7 +16,7 @@ if __name__ == '__main__':
     population_size = 5
 
     pop1 = Population(BinaryChromosome, population_size, number_of_chromosomes, number_of_genes, a, b, sample_function)
-    best = pop1.best_selection(2)
+    best = pop1.best_selection(2, min)
     print(best)
 
     # i1 = Individual(BinaryChromosome, number_of_chromosomes, number_of_genes, a, b)

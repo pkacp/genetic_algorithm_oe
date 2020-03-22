@@ -31,12 +31,17 @@ class Population:
             individuals_eval.append(individual.evaluate(self.target_function))
         return np.array((self.individuals, np.asarray(individuals_eval))).T
 
-    def best_selection(self, number_to_select):
+    def best_selection(self, number_to_select, searching_value):
         evaluated_pop = self.__evaluate_population()
         print(evaluated_pop)
         sorted_evaluated_pop = evaluated_pop[np.argsort(evaluated_pop[:, 1])]
         print(sorted_evaluated_pop)
-        return sorted_evaluated_pop[-number_to_select:]
+        if searching_value == max:
+            return sorted_evaluated_pop[-number_to_select:]
+        elif searching_value == min:
+            return sorted_evaluated_pop[:number_to_select]
+        else:
+            raise TypeError("Searching only for minimum or maximum value")
 
     def roulette_selection(self, number_to_select):
         return 0  # TODO return selected individuals
