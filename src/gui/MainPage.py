@@ -1,4 +1,5 @@
 import sys
+import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from src.gui.EndPage import EndPage
@@ -232,13 +233,39 @@ class MainPage(object):
             return self.EliteSpinBox.value() / 100
 
     def start(self):
-        self.change_to_percent()
+
+        precision = self.PrecisionSpinBox.value()
+        population = self.PopulationSpinBox.value()
+        era = self.EraSpinBox.value()
+
+        selection_type = self.SelectionMethodComboBox.currentText()
+        selection_val = self.SelectionDoubleSpinBox.value()
+
+        crossing_type = self.CrossComboBox.currentText()
+        crossing_val = self.CrossDoubleSpinBox.value()
+
+        mutation_val = self.MutationDoubleSpinBox.value()
+        mutation_type = self.MutationComboBox.currentText()
+
+        inversion = self.InversionSpinBox.value()
+        elite = self.change_to_percent()
+
+        x1From = self.x1FromSpinBox.value()
+        x1To = self.x1ToSpinBox.value()
+
+        x2From = self.x2FromSpinBox.value()
+        x2To = self.x2ToSpinBox.value()
+
         self.second_window = QtWidgets.QMainWindow()
+
+        start_time = time.time()
         # todo dodać tu wywołanie itp.
+        finish_time = time.time() - start_time
+
         gui = EndPage(self.second_window)
         gui.set_fist_graph("sample_graph.png")
         gui.set_second_graph("sample_graph2.png")
-        gui.set_time(12)
+        gui.set_time(finish_time)
         self.second_window.show()
 
 
