@@ -1,51 +1,56 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from src.gui.EndPage import EndPage
+
 
 class MainPage(object):
     def __init__(self):
-        self.MutationDoubleSpinBox = QtWidgets.QDoubleSpinBox(Dialog)
-        self.CrossDoubleSpinBox = QtWidgets.QDoubleSpinBox(Dialog)
-        self.SelectionDoubleSpinBox = QtWidgets.QDoubleSpinBox(Dialog)
-        self.label_13 = QtWidgets.QLabel(Dialog)
-        self.EliteCheckBox = QtWidgets.QCheckBox(Dialog)
-        self.InversionCheckBox = QtWidgets.QCheckBox(Dialog)
-        self.InversionSpinBox = QtWidgets.QSpinBox(Dialog)
-        self.label_12 = QtWidgets.QLabel(Dialog)
-        self.label_11 = QtWidgets.QLabel(Dialog)
-        self.label_10 = QtWidgets.QLabel(Dialog)
-        self.x2FromSpinBox = QtWidgets.QSpinBox(Dialog)
-        self.x2ToSpinBox = QtWidgets.QSpinBox(Dialog)
-        self.x1ToSpinBox = QtWidgets.QSpinBox(Dialog)
-        self.label_9 = QtWidgets.QLabel(Dialog)
-        self.label_8 = QtWidgets.QLabel(Dialog)
-        self.x1FromSpinBox = QtWidgets.QSpinBox(Dialog)
-        self.label_7 = QtWidgets.QLabel(Dialog)
-        self.EliteSpinBox = QtWidgets.QSpinBox(Dialog)
-        self.MutationComboBox = QtWidgets.QComboBox(Dialog)
-        self.label_6 = QtWidgets.QLabel(Dialog)
-        self.CrossComboBox = QtWidgets.QComboBox(Dialog)
-        self.label_5 = QtWidgets.QLabel(Dialog)
-        self.label_4 = QtWidgets.QLabel(Dialog)
-        self.SelectionMethodComboBox = QtWidgets.QComboBox(Dialog)
-        self.label_3 = QtWidgets.QLabel(Dialog)
-        self.label_2 = QtWidgets.QLabel(Dialog)
-        self.label = QtWidgets.QLabel(Dialog)
-        self.PrecisionSpinBox = QtWidgets.QSpinBox(Dialog)
-        self.PopulationSpinBox = QtWidgets.QSpinBox(Dialog)
-        self.EraSpinBox = QtWidgets.QSpinBox(Dialog)
-        self.StartButton = QtWidgets.QPushButton(Dialog)
+        self.main_font = QtGui.QFont()
+        self.main_font.setPointSize(7)
+        self.MutationDoubleSpinBox = QtWidgets.QDoubleSpinBox(window)
+        self.CrossDoubleSpinBox = QtWidgets.QDoubleSpinBox(window)
+        self.SelectionDoubleSpinBox = QtWidgets.QDoubleSpinBox(window)
+        self.label_13 = QtWidgets.QLabel(window)
+        self.EliteCheckBox = QtWidgets.QCheckBox(window)
+        self.InversionCheckBox = QtWidgets.QCheckBox(window)
+        self.InversionSpinBox = QtWidgets.QSpinBox(window)
+        self.label_12 = QtWidgets.QLabel(window)
+        self.label_11 = QtWidgets.QLabel(window)
+        self.label_10 = QtWidgets.QLabel(window)
+        self.x2FromSpinBox = QtWidgets.QSpinBox(window)
+        self.x2ToSpinBox = QtWidgets.QSpinBox(window)
+        self.x1ToSpinBox = QtWidgets.QSpinBox(window)
+        self.label_9 = QtWidgets.QLabel(window)
+        self.label_8 = QtWidgets.QLabel(window)
+        self.x1FromSpinBox = QtWidgets.QSpinBox(window)
+        self.label_7 = QtWidgets.QLabel(window)
+        self.EliteSpinBox = QtWidgets.QSpinBox(window)
+        self.MutationComboBox = QtWidgets.QComboBox(window)
+        self.label_6 = QtWidgets.QLabel(window)
+        self.CrossComboBox = QtWidgets.QComboBox(window)
+        self.label_5 = QtWidgets.QLabel(window)
+        self.label_4 = QtWidgets.QLabel(window)
+        self.SelectionMethodComboBox = QtWidgets.QComboBox(window)
+        self.label_3 = QtWidgets.QLabel(window)
+        self.label_2 = QtWidgets.QLabel(window)
+        self.label = QtWidgets.QLabel(window)
+        self.PrecisionSpinBox = QtWidgets.QSpinBox(window)
+        self.PopulationSpinBox = QtWidgets.QSpinBox(window)
+        self.EraSpinBox = QtWidgets.QSpinBox(window)
+        self.StartButton = QtWidgets.QPushButton(window)
 
-    def setup_ui(self, Dialog):
+    def setup_ui(self, window):
 
-        Dialog.setObjectName("Dialog")
-        Dialog.setWindowModality(QtCore.Qt.ApplicationModal)
-        Dialog.setEnabled(True)
-        Dialog.resize(390, 500)
-        Dialog.setMinimumSize(QtCore.QSize(390, 500))
-        Dialog.setMaximumSize(QtCore.QSize(390, 500))
-        Dialog.setWindowTitle("Projekt_OE")
-        Dialog.setSizeGripEnabled(False)
+        window.setObjectName("Dialog")
+        window.setWindowModality(QtCore.Qt.ApplicationModal)
+        window.setEnabled(True)
+        window.resize(420, 500)
+        window.setFont(self.main_font)
+        window.setMinimumSize(QtCore.QSize(420, 500))
+        window.setMaximumSize(QtCore.QSize(420, 500))
+        window.setWindowTitle("Projekt_OE")
+        # Dialog.setSizeGripEnabled(False)
 
         self.StartButton.setGeometry(QtCore.QRect(150, 450, 93, 28))
         self.StartButton.setObjectName("StartButton")
@@ -77,7 +82,7 @@ class MainPage(object):
 
         self.SelectionMethodComboBox.setGeometry(QtCore.QRect(110, 170, 91, 21))
         self.SelectionMethodComboBox.setObjectName("SelectionMethodComboBox")
-        self.SelectionMethodComboBox.addItems(["Najlepszych", "Ruletki","Truniejowej"])
+        self.SelectionMethodComboBox.addItems(["Najlepszych", "Ruletki", "Truniejowej"])
 
         self.label_4.setGeometry(QtCore.QRect(20, 170, 91, 21))
         self.label_4.setObjectName("label_4")
@@ -145,11 +150,11 @@ class MainPage(object):
         self.InversionSpinBox.setMinimum(0)
         self.InversionSpinBox.setObjectName("InwersionSpinBox_3")
 
-        self.InversionCheckBox.setGeometry(QtCore.QRect(210, 290, 131, 20))
+        self.InversionCheckBox.setGeometry(QtCore.QRect(210, 290, 170, 20))
         self.InversionCheckBox.setObjectName("InversionCheckBox")
         self.InversionCheckBox.clicked.connect(lambda: self.change_inversion())
 
-        self.EliteCheckBox.setGeometry(QtCore.QRect(210, 330, 141, 20))
+        self.EliteCheckBox.setGeometry(QtCore.QRect(210, 330, 160, 20))
         self.EliteCheckBox.setObjectName("EliteCheckBox")
         self.EliteCheckBox.clicked.connect(lambda: self.change_elite())
 
@@ -177,19 +182,19 @@ class MainPage(object):
         self.MutationDoubleSpinBox.setMaximum(1.0)
         self.MutationDoubleSpinBox.setSingleStep(0.01)
 
-        self.retranslate_ui(Dialog)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        self.retranslate_ui(window)
+        QtCore.QMetaObject.connectSlotsByName(window)
 
     def retranslate_ui(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
         self.StartButton.setText(_translate("Dialog", "Start"))
         self.label.setText(_translate("Dialog", "Dokładność"))
-        self.label_2.setText(_translate("Dialog", "Ilosc populacji"))
+        self.label_2.setText(_translate("Dialog", "Il. populacji"))
         self.label_3.setText(_translate("Dialog", "Ilosc er"))
         self.label_4.setText(_translate("Dialog", "Metoda selekcji"))
         self.label_5.setText(_translate("Dialog", "Krzyżowanie"))
         self.label_6.setText(_translate("Dialog", "Mutacja"))
-        self.label_7.setText(_translate("Dialog", "Strategii. Elitarnej"))
+        self.label_7.setText(_translate("Dialog", "Strat. Elitarnej"))
         self.label_8.setText(_translate("Dialog", "Zakres x1 od"))
         self.label_9.setText(_translate("Dialog", "do"))
         self.label_10.setText(_translate("Dialog", "do"))
@@ -224,18 +229,23 @@ class MainPage(object):
 
     def change_to_percent(self):
         if not self.EliteCheckBox.isChecked():
-            return self.EliteSpinBox.value()/100
+            return self.EliteSpinBox.value() / 100
 
     def start(self):
         self.change_to_percent()
-        print("Wziummmmmmmmmmmmm!")
-        #Dialog.colse() To będzie do zamykania okna
+        self.second_window = QtWidgets.QMainWindow()
+        # todo dodać tu wywołanie itp.
+        gui = EndPage(self.second_window)
+        gui.set_fist_graph("sample_graph.png")
+        gui.set_second_graph("sample_graph2.png")
+        gui.set_time(12)
+        self.second_window.show()
 
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    Dialog = QtWidgets.QDialog()
+    window = QtWidgets.QMainWindow()
     ui = MainPage()
-    ui.setup_ui(Dialog)
-    Dialog.show()
+    ui.setup_ui(window)
+    window.show()
     sys.exit(app.exec_())
