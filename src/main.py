@@ -25,7 +25,6 @@ if __name__ == '__main__':
 
     print("-------------------------------------")
     i3, i4 = i1.crossover(BinaryChromosome.one_point_crossover, i2)
-    print("-------------------------------------")
 
     i3.show()
     i4.show()

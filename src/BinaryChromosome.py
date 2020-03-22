@@ -5,10 +5,6 @@ import numpy as np
 class BinaryChromosome(Chromosome):
     def __init__(self, genes_in_chr, value=np.array([False])):
         self.number_of_genes = genes_in_chr
-        print("###########start")
-        print(value)
-        print(value.__class__)
-        print("###########end")
         if value.any():
             self.value = value
         else:
@@ -39,12 +35,10 @@ class BinaryChromosome(Chromosome):
         return int(str_bit_number, 2)
 
     @staticmethod
-    def n_point_crossover(n, first_chromosome, second_chromosome):
+    def __n_point_crossover(n, first_chromosome, second_chromosome):
         num_of_arr_to_get_after_split = n + 1
         self_split = np.array_split(first_chromosome.value, num_of_arr_to_get_after_split)
         other_split = np.array_split(second_chromosome.value, num_of_arr_to_get_after_split)
-        # print(self_split)
-        # print(other_split)
         self_array_of_splits = []
         other_array_of_splits = []
         for i in range(num_of_arr_to_get_after_split):
@@ -56,27 +50,25 @@ class BinaryChromosome(Chromosome):
                 other_array_of_splits.append(self_split[i])
         new_first_chromosome_val = np.concatenate(self_array_of_splits)
         new_second_chromosome_val = np.concatenate(other_array_of_splits)
-        # print(new_first_chromosome_val)
-        # print(new_second_chromosome_val)
         return BinaryChromosome(first_chromosome.number_of_genes, new_first_chromosome_val), BinaryChromosome(
             second_chromosome.number_of_genes, new_second_chromosome_val)
 
     @staticmethod
     def one_point_crossover(first_chromosome, second_chromosome):
-        return BinaryChromosome.n_point_crossover(1, first_chromosome, second_chromosome)
+        return BinaryChromosome.__n_point_crossover(1, first_chromosome, second_chromosome)
 
     @staticmethod
     def two_point_crossover(first_chromosome, second_chromosome):
-        return BinaryChromosome.n_point_crossover(2, first_chromosome, second_chromosome)
+        return BinaryChromosome.__n_point_crossover(2, first_chromosome, second_chromosome)
 
     @staticmethod
     def three_point_crossover(first_chromosome, second_chromosome):
-        return BinaryChromosome.n_point_crossover(3, first_chromosome, second_chromosome)
+        return BinaryChromosome.__n_point_crossover(3, first_chromosome, second_chromosome)
 
     @staticmethod
     def uniform_crossover(first_chromosome, second_chromosome):
-        return BinaryChromosome.n_point_crossover(first_chromosome.number_of_genes - 1, first_chromosome,
-                                                  second_chromosome)
+        return BinaryChromosome.__n_point_crossover(first_chromosome.number_of_genes - 1, first_chromosome,
+                                                    second_chromosome)
 
     def inversion(self):
         return self.inversion_prob
