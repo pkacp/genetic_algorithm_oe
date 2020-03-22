@@ -23,7 +23,7 @@ class BinaryChromosome(Chromosome):
     @staticmethod
     def calculate_chain_length(range_start, range_end, acc):
         if range_start > range_end:
-            return "Wrong range"
+            raise ValueError('Wrong range')
         else:
             return np.math.ceil(np.math.log2(abs(range_end - range_start) * pow(10, acc)))
 
@@ -71,4 +71,4 @@ class BinaryChromosome(Chromosome):
                                                     second_chromosome)
 
     def inversion(self):
-        return self.inversion_prob
+        return self.inversion_prob  # TODO implement inversion
