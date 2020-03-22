@@ -1,5 +1,4 @@
 import numpy as np
-import random
 
 from src.Individual import Individual
 
@@ -50,18 +49,6 @@ class Population:
         individuals_probability = []
         for i in range(evaluated_pop.shape[0]):
             individuals_probability.append(evaluated_pop[i][1] / sum_of_evaluated_individuals)
-        individuals_cumsum = np.cumsum(np.asarray(individuals_probability))
-        # eval_pop_with_prob = np.c_[evaluated_pop, np.asarray(individuals_probability)]
-        # eval_pop_with_prob_cumsum = np.c_[eval_pop_with_prob, (np.cumsum(eval_pop_with_prob[:, 2]))]
-        # print(eval_pop_with_prob_cumsum)
-        print(individuals_probability)
-        print(evaluated_pop)
         selected_individuals = np.random.choice(evaluated_pop[:, 0], num_of_individuals_to_select,
                                                 p=individuals_probability)
-        print(selected_individuals)
-        # for i in range(num_of_individuals_to_select):
-        #     random.random()
-        #     for individual in range(eval_pop_with_prob_cumsum):
-        #         individual[3]
-        #     selected_individuals.append()
-        return selected_individuals  # TODO return selected individuals
+        return selected_individuals
