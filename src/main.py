@@ -18,9 +18,9 @@ if __name__ == '__main__':
     number_of_chromosomes = 1
     population_size = 500
 
-    evolution = Evolution(epochs, population_size, a, b, accuracy, sample_function, min, BinaryChromosome,
-                          number_of_chromosomes, SelectionType.ROULETTE, (), CrossingType.THREE_POINT, 0.9, None, 0, 100)
-    evolution.run()
+    # evolution = Evolution(epochs, population_size, a, b, accuracy, sample_function, min, BinaryChromosome,
+    #                       number_of_chromosomes, SelectionType.ROULETTE, (), CrossingType.THREE_POINT, 0.9, None, 0, 100)
+    # evolution.run()
 
     # pop1 = Population(BinaryChromosome, population_size, number_of_chromosomes, 5, a, b, sample_function)
     #
@@ -42,3 +42,11 @@ if __name__ == '__main__':
     #
     # i3.show()
     # i4.show()
+
+    b1 = BinaryChromosome(10)
+    b1.show()
+    print(b1.decode_val_to_decimal(a,b))
+    b1.border_mutation("end")
+    b1.show()
+    print(b1.decode_val_to_decimal(a,b))
+

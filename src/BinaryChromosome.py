@@ -70,5 +70,18 @@ class BinaryChromosome(Chromosome):
         return BinaryChromosome.__n_point_crossover(first_chromosome.number_of_genes - 1, first_chromosome,
                                                     second_chromosome)
 
+    def border_mutation(self, place):
+        if place == 'start':
+            mutation_place = 0
+        elif place == 'end':
+            mutation_place = -1
+        else:
+            raise TypeError("You can only border mutate on start or end of chromosome")
+        bit_value = self.value[mutation_place]
+        if bit_value == 1:
+            self.value[mutation_place] = 0
+        elif bit_value == 0:
+            self.value[mutation_place] = 1
+
     def inversion(self):
         return self.inversion_prob  # TODO implement inversion
