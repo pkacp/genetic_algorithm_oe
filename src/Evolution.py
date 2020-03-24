@@ -12,7 +12,7 @@ class Evolution:
         self.population_size = population_size
         self.population_set = set()
         self.elite_strategy_num = elite_strategy_num
-        self.best_individuals = set()
+        # self.best_individuals = set()
         self.range_start = range_start
         self.range_end = range_end
         self.fitness_function = fitness_function
@@ -32,17 +32,11 @@ class Evolution:
         for generation in range(self.epochs_num):
             new_population = Population(self.chromosome_type, self.population_size, self.chromosomes_number,
                                         self.number_of_genes, self.range_start, self.range_end, self.fitness_function,
-                                        self.searching_value, self.elite_strategy_num, next_generation_individuals)
+                                        self.searching_value, self.crossover_type, self.elite_strategy_num,
+                                        next_generation_individuals)
             self.population_set.add(new_population)
-            new_population.elite_strategy()
-            self.best_individuals.add(new_population.best_individuals)
-            print("elites")
-            print(self.best_individuals)
-            num_individuals_to_select = self.population_size - len(self.best_individuals)
-            print(num_individuals_to_select)
-            selected_individuals = new_population.selection(self.selection_type, num_individuals_to_select,
-                                                            self.searching_value, [])
-            print("selected_individuals")
-            print(selected_individuals)
-            # individuals_for_crossing
-            print(generation)
+
+            new_population.select_individuals(self.selection_type)
+            new_individuals = new_population.crossover_selected_individuals()
+            print(new_individuals)
+
