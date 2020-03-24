@@ -25,6 +25,7 @@ class Evolution:
         self.crossover_prob = crossover_prob
         self.mutation_type = mutation_type
         self.mutation_prob = mutation_prob
+        self.best_individuals = np.array([])
         self.number_of_genes = BinaryChromosome.calculate_chain_length(range_start, range_end, accuracy)
 
     def run(self):
@@ -35,8 +36,25 @@ class Evolution:
                                         self.searching_value, self.crossover_type, self.elite_strategy_num,
                                         next_generation_individuals)
             self.population_set.add(new_population)
-
+            self.best_individuals = self.get_best_individuals(new_population.best_individuals, self.elite_strategy_num)
+            print("SHAPE")
+            print(self.best_individuals.shape)
             new_population.select_individuals(self.selection_type)
             new_individuals = new_population.crossover_selected_individuals()
-            print(new_individuals)
+            next_generation_individuals = np.append(new_individuals, self.best_individuals)
 
+        best = self.get_best_individuals(next_generation_individuals, 1)
+        print("Final best")
+        print(best[0].get_decimal_value_of_chromosomes())
+
+    def get_best_individuals(self, new_best_candidates, number_to_select):
+        individuals = np.append(self.best_individuals, new_best_candidates)
+        evaluated_individuals = Population.evaluate_individuals(individuals, self.fitness_function)
+        sorted_evaluated_individuals = evaluated_individuals[np.argsort(evaluated_individuals[:, 1])]
+        # TODO Return unique values by column with evaluation
+        if self.searching_value == max:
+            return sorted_evaluated_individuals[-number_to_select:][:, 0]
+        elif self.searching_value == min:
+            return sorted_evaluated_individuals[:number_to_select][:, 0]
+        else:
+            raise TypeError("Searching only for minimum or maximum value")

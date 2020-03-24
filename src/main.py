@@ -13,13 +13,13 @@ if __name__ == '__main__':
 
     a = -10
     b = 10
-    accuracy = 4
-    epochs = 2
-    number_of_chromosomes = 2
-    population_size = 51
+    accuracy = 6
+    epochs = 30
+    number_of_chromosomes = 1
+    population_size = 500
 
     evolution = Evolution(epochs, population_size, a, b, accuracy, sample_function, min, BinaryChromosome,
-                          number_of_chromosomes, SelectionType.ROULETTE, (), CrossingType.ONE_POINT, 0.9, None, 0, 2)
+                          number_of_chromosomes, SelectionType.ROULETTE, (), CrossingType.THREE_POINT, 0.9, None, 0, 100)
     evolution.run()
 
     # pop1 = Population(BinaryChromosome, population_size, number_of_chromosomes, 5, a, b, sample_function)

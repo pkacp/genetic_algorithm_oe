@@ -21,7 +21,7 @@ class Population:
         self.elite_strategy_num = elite_strategy_num
         self.selected_individuals = np.array([])
         self._individuals = self.generate_population(values)
-        self._evaluated_population = self.__evaluate_population()
+        self.evaluated_population = self.__evaluate_population()
         self.best_individuals = self.__elite_strategy()
 
     def generate_population(self, values):
@@ -43,20 +43,31 @@ class Population:
             print(individual.get_decimal_value_of_chromosomes())
 
     def __evaluate_population(self):
+        return self.evaluate_individuals(self._individuals, self.fitness_function)
+
+    @staticmethod
+    def evaluate_individuals(individuals_arr, fitness_function):
         individuals_eval = []
-        for individual in self._individuals:
-            individuals_eval.append(individual.evaluate(self.fitness_function))
-        return np.array((self._individuals, np.asarray(individuals_eval))).T
+        for individual in individuals_arr:
+            individuals_eval.append(individual.evaluate(fitness_function))
+        return np.array((individuals_arr, np.asarray(individuals_eval))).T
 
     def __elite_strategy(self):
         return self.best_selection(self.elite_strategy_num, [])
+
+    def get_best_individual(self):
+        best_value = self.searching_value(self.evaluated_population[:, 1])
+        print(best_value)
+        return np.where(self.evaluated_population[1] == best_value)
 
     def select_individuals(self, selection_method, *args):
         num_individuals_to_select = self.size - self.elite_strategy_num
         self.selected_individuals = selection_method(self, num_individuals_to_select, args)
 
     def best_selection(self, num_of_individuals_to_select, args):
-        sorted_evaluated_pop = self._evaluated_population[np.argsort(self._evaluated_population[:, 1])]
+        sorted_evaluated_pop = self.evaluated_population[np.argsort(self.evaluated_population[:, 1])]
+        # print("sorted_evaluated_pop")
+        # print(sorted_evaluated_pop)
         if self.searching_value == max:
             return sorted_evaluated_pop[-num_of_individuals_to_select:][:, 0]
         elif self.searching_value == min:
@@ -65,7 +76,7 @@ class Population:
             raise TypeError("Searching only for minimum or maximum value")
 
     def roulette_selection(self, num_of_individuals_to_select, args):
-        evaluated_pop = self._evaluated_population
+        evaluated_pop = self.evaluated_population
         if self.searching_value == min:
             evaluated_pop[:, 1] = 1.0 / evaluated_pop[:, 1]
         sum_of_evaluated_individuals = np.sum(evaluated_pop[:, 1])
@@ -87,9 +98,14 @@ class Population:
         individuals_for_crossing = self.__pick_individuals_with_probability()
         new_individuals = self.__cross_every_picked_individual(individuals_for_crossing)
         num_missing_individuals = num_individuals_to_return - len(new_individuals)
-        missing_individuals = self.__cross_random_picked_individuals(num_missing_individuals, individuals_for_crossing)
+        missing_individuals = []
+        if num_missing_individuals > 0:
+            missing_individuals = self.__cross_random_picked_individuals(num_missing_individuals,
+                                                                         individuals_for_crossing)
+        elif num_missing_individuals < 0:
+            new_individuals.pop(num_missing_individuals)
         all_new_individuals = new_individuals + missing_individuals
-        return all_new_individuals
+        return np.asarray(all_new_individuals)
 
     def __pick_individuals_with_probability(self):
         individuals_for_crossing = []
@@ -119,5 +135,5 @@ class Population:
         if number_to_fill % 2 != 0:
             individuals_to_cross = np.random.choice(individuals_list, 2)
             new_i = individuals_to_cross[0].crossover(self.crossover_type, individuals_to_cross[1])
-            crossed_individuals.append(new_i)
+            crossed_individuals.append(new_i[0])
         return crossed_individuals
