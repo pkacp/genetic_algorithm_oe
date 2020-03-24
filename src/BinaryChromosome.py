@@ -70,18 +70,23 @@ class BinaryChromosome(Chromosome):
         return BinaryChromosome.__n_point_crossover(first_chromosome.number_of_genes - 1, first_chromosome,
                                                     second_chromosome)
 
-    def border_mutation(self, place):
+    @staticmethod
+    def reverse_bit(bit):
+        return int(not bit)
+
+    def n_bits_mutation(self, n, place):
         if place == 'start':
-            mutation_place = 0
+            for i in range(n):
+                self.value[i] = self.reverse_bit(self.value[i])
         elif place == 'end':
-            mutation_place = -1
+            for i in range(n):
+                self.value[-i-1] = self.reverse_bit(self.value[-i-1])
+        elif place == 'random':
+            bits_to_change_indexes = np.random.choice(np.arange(self.number_of_genes), n, replace=False)
+            for i in bits_to_change_indexes:
+                self.value[i] = self.reverse_bit(self.value[i])
         else:
-            raise TypeError("You can only border mutate on start or end of chromosome")
-        bit_value = self.value[mutation_place]
-        if bit_value == 1:
-            self.value[mutation_place] = 0
-        elif bit_value == 0:
-            self.value[mutation_place] = 1
+            raise TypeError("You can only mutate on start or end or in random place of chromosome")
 
     def inversion(self):
         return self.inversion_prob  # TODO implement inversion

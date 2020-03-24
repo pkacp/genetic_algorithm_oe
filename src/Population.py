@@ -84,7 +84,7 @@ class Population:
         for i in range(evaluated_pop.shape[0]):
             individuals_probability.append(evaluated_pop[i][1] / sum_of_evaluated_individuals)
         selected_individuals = np.random.choice(evaluated_pop[:, 0], num_of_individuals_to_select,
-                                                p=individuals_probability)
+                                                replace=False, p=individuals_probability)
         return selected_individuals
 
     def ranking_selection(self):
@@ -128,12 +128,12 @@ class Population:
     def __cross_random_picked_individuals(self, number_to_fill, individuals_list):
         crossed_individuals = []
         for i in range(int(number_to_fill / 2)):
-            individuals_to_cross = np.random.choice(individuals_list, 2)
+            individuals_to_cross = np.random.choice(individuals_list, 2, replace=False)
             new_i0, new_i1 = individuals_to_cross[0].crossover(self.crossover_type, individuals_to_cross[1])
             crossed_individuals.append(new_i0)
             crossed_individuals.append(new_i1)
         if number_to_fill % 2 != 0:
-            individuals_to_cross = np.random.choice(individuals_list, 2)
+            individuals_to_cross = np.random.choice(individuals_list, 2, replace=False)
             new_i = individuals_to_cross[0].crossover(self.crossover_type, individuals_to_cross[1])
             crossed_individuals.append(new_i[0])
         return crossed_individuals

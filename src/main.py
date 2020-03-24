@@ -45,8 +45,7 @@ if __name__ == '__main__':
 
     b1 = BinaryChromosome(10)
     b1.show()
-    print(b1.decode_val_to_decimal(a,b))
-    b1.border_mutation("end")
+    print(b1.decode_val_to_decimal(a, b))
+    b1.n_bits_mutation(3, "random")
     b1.show()
-    print(b1.decode_val_to_decimal(a,b))
-
+    print(b1.decode_val_to_decimal(a, b))
