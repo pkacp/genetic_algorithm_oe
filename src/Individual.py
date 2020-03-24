@@ -2,7 +2,8 @@ import numpy as np
 
 
 class Individual:
-    def __init__(self, chromosome_type, number_of_chromosomes, genes_in_chr, range_start, range_end, chr_values=np.array([False])):
+    def __init__(self, chromosome_type, number_of_chromosomes, genes_in_chr, range_start, range_end,
+                 chr_values=np.array([False])):
         self.chromosome_type = chromosome_type
         self.number_of_chromosomes = number_of_chromosomes
         self.genes_in_chr = genes_in_chr
@@ -34,7 +35,8 @@ class Individual:
         new_individual_1 = Individual(self.chromosome_type, self.number_of_chromosomes, self.genes_in_chr,
                                       self.range_start, self.range_end, np.asarray(first_new_values))
         new_individual_2 = Individual(other_individual.chromosome_type, other_individual.number_of_chromosomes,
-                                      self.range_start, self.range_end, other_individual.genes_in_chr, np.asarray(second_new_values))
+                                      self.range_start, self.range_end, other_individual.genes_in_chr,
+                                      np.asarray(second_new_values))
         return new_individual_1, new_individual_2
 
     def get_decimal_value_of_chromosomes(self):
@@ -43,5 +45,5 @@ class Individual:
             decimal_values.append(chromosome.decode_val_to_decimal(self.range_start, self.range_end))
         return decimal_values
 
-    def evaluate(self, target_function):
-        return target_function(self.get_decimal_value_of_chromosomes())
+    def evaluate(self, fitness_function):
+        return fitness_function(self.get_decimal_value_of_chromosomes())
