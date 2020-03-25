@@ -89,4 +89,7 @@ class BinaryChromosome(Chromosome):
             raise TypeError("You can only mutate on start or end or in random place of chromosome")
 
     def inversion(self):
-        return self.inversion_prob  # TODO implement inversion
+        inversion_places = np.sort(np.random.choice(self.number_of_genes, size=2, replace=False))
+        print(inversion_places)
+        for i in range(inversion_places[0],inversion_places[1]):
+            self.value[i] = self.reverse_bit(self.value[i])
