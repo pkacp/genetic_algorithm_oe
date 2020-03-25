@@ -3,6 +3,7 @@ from src.Evolution import Evolution
 from src.Population import Population
 from src.enums.SelectionType import SelectionType
 from src.enums.CrossingType import CrossingType
+from src.enums.MutationType import MutationType
 from src.Individual import Individual
 import time
 
@@ -31,23 +32,14 @@ if __name__ == '__main__':
     #
     # roulette = pop1.roulette_selection(2, min)
     #
-    # i1 = Individual(BinaryChromosome, number_of_chromosomes, number_of_genes, a, b)
-    # i2 = Individual(BinaryChromosome, number_of_chromosomes, number_of_genes, a, b)
-    #
-    # i1.show()
-    # i2.show()
-    #
-    # print("-------------------------------------")
-    # i3, i4 = i1.crossover(BinaryChromosome.one_point_crossover, i2)
-    #
-    # i3.show()
-    # i4.show()
+    i1 = Individual(BinaryChromosome, number_of_chromosomes, 6, a, b)
+    i2 = Individual(BinaryChromosome, number_of_chromosomes, 6, a, b)
 
-    b1 = BinaryChromosome(10)
-    b1.show()
-    print(b1.decode_val_to_decimal(a, b))
+    i1.show()
 
-    b1.inversion()
+    print("-------------------------------------")
+    i1.mutation(MutationType.ONE_POINT)
 
-    b1.show()
-    print(b1.decode_val_to_decimal(a, b))
+    i1.show()
+
+

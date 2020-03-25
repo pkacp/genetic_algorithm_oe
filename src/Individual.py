@@ -1,4 +1,5 @@
 import numpy as np
+from src.enums.MutationType import MutationType
 
 
 class Individual:
@@ -38,6 +39,23 @@ class Individual:
                                       self.range_start, self.range_end, other_individual.genes_in_chr,
                                       np.asarray(second_new_values))
         return new_individual_1, new_individual_2
+
+    def mutate(self, mutation_type):
+        for chromosome in self.chromosomes:
+            if mutation_type == MutationType.ONE_POINT:
+                chromosome.n_bits_mutation(MutationType.ONE_POINT.value['n'], MutationType.ONE_POINT.value['place'])
+            elif mutation_type == MutationType.TWO_POINT:
+                chromosome.n_bits_mutation(MutationType.TWO_POINT.value['n'], MutationType.TWO_POINT.value['place'])
+            elif mutation_type == MutationType.THREE_POINT:
+                chromosome.n_bits_mutation(MutationType.THREE_POINT.value['n'], MutationType.THREE_POINT.value['place'])
+            elif mutation_type == MutationType.BORDER:
+                chromosome.n_bits_mutation(MutationType.BORDER.value['n'], MutationType.BORDER.value['place'])
+            else:
+                raise TypeError("Wrong mutation type")
+
+    def invert(self):
+        for chromosome in self.chromosomes:
+            chromosome.inversion()
 
     def get_decimal_value_of_chromosomes(self):
         decimal_values = []

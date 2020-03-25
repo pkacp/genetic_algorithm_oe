@@ -75,12 +75,14 @@ class BinaryChromosome(Chromosome):
         return int(not bit)
 
     def n_bits_mutation(self, n, place):
+        if n > self.number_of_genes:
+            raise IndexError("More mutations than expected")
         if place == 'start':
             for i in range(n):
                 self.value[i] = self.reverse_bit(self.value[i])
         elif place == 'end':
             for i in range(n):
-                self.value[-i-1] = self.reverse_bit(self.value[-i-1])
+                self.value[-i - 1] = self.reverse_bit(self.value[-i - 1])
         elif place == 'random':
             bits_to_change_indexes = np.random.choice(np.arange(self.number_of_genes), n, replace=False)
             for i in bits_to_change_indexes:
@@ -91,5 +93,5 @@ class BinaryChromosome(Chromosome):
     def inversion(self):
         inversion_places = np.sort(np.random.choice(self.number_of_genes, size=2, replace=False))
         print(inversion_places)
-        for i in range(inversion_places[0],inversion_places[1]):
+        for i in range(inversion_places[0], inversion_places[1]):
             self.value[i] = self.reverse_bit(self.value[i])
