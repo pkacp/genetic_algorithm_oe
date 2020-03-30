@@ -8,7 +8,7 @@ from src.Population import Population
 class Evolution:
     def __init__(self, epochs_num, population_size, range_start, range_end, accuracy, fitness_function, searching_value,
                  chromosome_type, chromosomes_number, selection_type, selection_args, crossover_type, crossover_prob,
-                 mutation_type, mutation_prob, elite_strategy_num=0):
+                 mutation_type, mutation_prob, inversion_prob, elite_strategy_num=0):
         self.epochs_num = epochs_num
         self.population_size = population_size
         self.population_set = set()
@@ -25,6 +25,7 @@ class Evolution:
         self.crossover_prob = crossover_prob
         self.mutation_type = mutation_type
         self.mutation_prob = mutation_prob
+        self.inversion_prob = inversion_prob
         self.best_individuals = np.array([])
         self.number_of_genes = chromosome_type.calculate_chain_length(range_start, range_end, accuracy)
         self.time = 9999999999
@@ -42,11 +43,11 @@ class Evolution:
             self.best_individuals = self.elite_strategy(new_population.best_individuals)
             new_population.select_individuals(self.selection_type, self.selection_args)
             new_individuals = new_population.crossover_selected_individuals()
-            print(new_individuals[0].get_decimal_value_of_chromosomes())
             if self.mutation_prob > 0.0:
                 Population.mutate_individuals(new_individuals, self.mutation_type, self.mutation_prob)
-            print(new_individuals[0].get_decimal_value_of_chromosomes())
-            print("-------------------------------------------")
+            if self.inversion_prob > 0.0:
+                Population.inverse_individuals(new_individuals, self.inversion_prob)
+            # print("-------------------------------------------")
             next_generation_individuals = np.append(new_individuals, self.best_individuals)
 
         best = Population.get_n_best_individuals(1, self.searching_value, next_generation_individuals,
@@ -65,4 +66,3 @@ class Evolution:
         individuals = np.asarray(list(set(np.append(self.best_individuals, new_best_candidates))))
         return Population.get_n_best_individuals(self.elite_strategy_num, self.searching_value, individuals,
                                                  self.fitness_function)
-

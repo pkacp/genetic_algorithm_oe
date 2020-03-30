@@ -92,6 +92,5 @@ class BinaryChromosome(Chromosome):
 
     def inversion(self):
         inversion_places = np.sort(np.random.choice(self.number_of_genes, size=2, replace=False))
-        print(inversion_places)
         for i in range(inversion_places[0], inversion_places[1]):
             self.value[i] = self.reverse_bit(self.value[i])

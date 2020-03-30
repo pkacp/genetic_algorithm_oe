@@ -74,7 +74,7 @@ class Population:
             raise TypeError("Searching only for minimum or maximum value")
 
     def roulette_selection(self, num_of_individuals_to_select, args):
-        evaluated_pop = self.evaluated_population
+        evaluated_pop = self.evaluate_individuals(self._individuals, self._individuals)
         if self.searching_value == min:
             evaluated_pop[:, 1] = 1.0 / evaluated_pop[:, 1]
         sum_of_evaluated_individuals = np.sum(evaluated_pop[:, 1])
@@ -134,12 +134,12 @@ class Population:
     def __cross_random_picked_individuals(self, number_to_fill, individuals_list):
         crossed_individuals = []
         for i in range(int(number_to_fill / 2)):
-            individuals_to_cross = np.random.choice(individuals_list, 2, replace=False)
+            individuals_to_cross = np.random.choice(individuals_list, 2)
             new_i0, new_i1 = individuals_to_cross[0].crossover(self.crossover_type, individuals_to_cross[1])
             crossed_individuals.append(new_i0)
             crossed_individuals.append(new_i1)
         if number_to_fill % 2 != 0:
-            individuals_to_cross = np.random.choice(individuals_list, 2, replace=False)
+            individuals_to_cross = np.random.choice(individuals_list, 2)
             new_i = individuals_to_cross[0].crossover(self.crossover_type, individuals_to_cross[1])
             crossed_individuals.append(new_i[0])
         return crossed_individuals
@@ -150,3 +150,8 @@ class Population:
             if np.random.rand() < mutation_prob:
                 individual.mutate(mutation_type)
 
+    @staticmethod
+    def inverse_individuals(group_of_individuals, inversion_prob):
+        for individual in group_of_individuals:
+            if np.random.rand() < inversion_prob:
+                individual.invert()

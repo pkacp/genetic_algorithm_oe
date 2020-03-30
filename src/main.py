@@ -38,12 +38,12 @@ if __name__ == '__main__':
     accuracy = 10
     epochs = 30
     number_of_chromosomes = 2
-    population_size = 19
-    k = 5  # tournament size
+    population_size = 200
+    k = 10  # tournament size
 
     evolution = Evolution(epochs, population_size, a, b, accuracy, levy_function, min, BinaryChromosome,
                           number_of_chromosomes, SelectionType.TOURNAMENT, [k], CrossingType.THREE_POINT, 0.9,
-                          MutationType.TWO_POINT, 1, 2)
+                          MutationType.TWO_POINT, 0.1, 0.1, 20)
     evolution.run()
 
     # pop1 = Population(BinaryChromosome, population_size, number_of_chromosomes, 5, a, b, sample_function)
