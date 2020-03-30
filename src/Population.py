@@ -17,16 +17,17 @@ class Population:
         self.searching_value = searching_value
         self.crossover_type = crossover_type
         self.crossover_prob = crossover_prob
-        # self.mutation_prob = 0.1
-        # self.inversion_prob = 0.05
         self.elite_strategy_num = elite_strategy_num
         self.selected_individuals = np.array([])
         self._individuals = self.generate_population(values)
         self.best_individuals = self.__elite_strategy()
+        self.evaluated_starting_individuals = self.evaluate_individuals(self._individuals, self.fitness_function)
 
     def generate_population(self, values):
-        if values.any():  # TODO check if number of given individuals is correct
+        if values.shape[0] == self.size:
             return values
+        elif values.any() and values.shape[0] < self.size:
+            raise ValueError(f"Wrong number of individuals, expected{self.size}, get {values.shape[0]}")
         else:
             individuals = []
             for i in range(self.size):
@@ -54,10 +55,10 @@ class Population:
                                            self.fitness_function)
 
     def select_individuals(self, selection_method, args):
-        num_individuals_to_select = self.size - self.elite_strategy_num
-        self.selected_individuals = selection_method(self, num_individuals_to_select, args)
+        self.selected_individuals = selection_method(self, args)
 
-    def best_selection(self, num_of_individuals_to_select, args):
+    def best_selection(self, args):
+        num_of_individuals_to_select = args[0]
         return Population.get_n_best_individuals(num_of_individuals_to_select, self.searching_value,
                                                  self._individuals,
                                                  self.fitness_function)
@@ -73,8 +74,9 @@ class Population:
         else:
             raise TypeError("Searching only for minimum or maximum value")
 
-    def roulette_selection(self, num_of_individuals_to_select, args):
-        evaluated_pop = self.evaluate_individuals(self._individuals, self._individuals)
+    def roulette_selection(self, args):
+        num_of_individuals_to_select = args[0]
+        evaluated_pop = self.evaluate_individuals(self._individuals, self.fitness_function)
         if self.searching_value == min:
             evaluated_pop[:, 1] = 1.0 / evaluated_pop[:, 1]
         sum_of_evaluated_individuals = np.sum(evaluated_pop[:, 1])
@@ -88,7 +90,7 @@ class Population:
                                                 p=individuals_probability)
         return selected_individuals
 
-    def tournament_selection(self, num_of_individuals_to_select, args):
+    def tournament_selection(self, args):
         selected_individuals = []
         tournament_size = args[0]
         tournaments_number = round(self.size / tournament_size)
