@@ -89,11 +89,15 @@ class Population:
         return selected_individuals
 
     def tournament_selection(self, num_of_individuals_to_select, args):
+        selected_individuals = []
         tournament_size = args[0]
-        print("tournament_size")
-        print(tournament_size)
-
-        return self._individuals[0]  # TODO tournament selection
+        tournaments_number = round(self.size / tournament_size)
+        np.random.shuffle(self._individuals)
+        tournaments = np.array_split(self._individuals, tournaments_number)
+        for tournament in tournaments:
+            selected_individuals.append(
+                self.get_n_best_individuals(1, self.searching_value, tournament, self.fitness_function)[0])
+        return np.asarray(selected_individuals)
 
     def crossover_selected_individuals(self):
         num_individuals_to_return = self.size - self.elite_strategy_num
@@ -142,4 +146,4 @@ class Population:
 
     @staticmethod
     def mutate_individuals(mutation_type, group_of_individuals):
-        return 0
+        return 0  # TODO mutation and inversion

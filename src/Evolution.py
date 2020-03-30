@@ -1,4 +1,5 @@
 import numpy as np
+import time
 
 from src.BinaryChromosome import BinaryChromosome
 from src.Population import Population
@@ -26,8 +27,10 @@ class Evolution:
         self.mutation_prob = mutation_prob
         self.best_individuals = np.array([])
         self.number_of_genes = chromosome_type.calculate_chain_length(range_start, range_end, accuracy)
+        self.time = 9999999999
 
     def run(self):
+        time_start = time.time()
         next_generation_individuals = np.array([])
         for generation in range(self.epochs_num):
             new_population = Population(self.chromosome_type, self.population_size, self.chromosomes_number,
@@ -37,8 +40,6 @@ class Evolution:
                                         next_generation_individuals)
             self.population_set.add(new_population)
             self.best_individuals = self.elite_strategy(new_population.best_individuals)
-            # print("SHAPE")
-            # print(self.best_individuals.shape)
             new_population.select_individuals(self.selection_type, self.selection_args)
             new_individuals = new_population.crossover_selected_individuals()
             print("-------------------------------------------")
@@ -46,8 +47,15 @@ class Evolution:
 
         best = Population.get_n_best_individuals(1, self.searching_value, next_generation_individuals,
                                                  self.fitness_function)
-        print("Final best")
+        time_end = time.time()
+        self.time = time_end - time_start
+
+        print("Final best:")
         print(best[0].get_decimal_value_of_chromosomes())
+        print("value:")
+        print(best[0].evaluate(self.fitness_function))
+        print("evolution time: ")
+        print(self.time)
 
     def elite_strategy(self, new_best_candidates):
         individuals = np.asarray(list(set(np.append(self.best_individuals, new_best_candidates))))

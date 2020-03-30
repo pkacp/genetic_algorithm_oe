@@ -33,17 +33,17 @@ if __name__ == '__main__':
             arg_arr[0] + 10.0)
 
 
-    a = -15
-    b = 15
+    a = -10
+    b = 10
     accuracy = 10
-    epochs = 3
+    epochs = 30
     number_of_chromosomes = 2
-    population_size = 20
+    population_size = 19
     k = 5  # tournament size
 
     evolution = Evolution(epochs, population_size, a, b, accuracy, levy_function, min, BinaryChromosome,
-                          number_of_chromosomes, SelectionType.BEST, [k], CrossingType.THREE_POINT, 0.9, None, 0,
-                          20)
+                          number_of_chromosomes, SelectionType.TOURNAMENT, [k], CrossingType.THREE_POINT, 0.9, None, 0,
+                          2)
     evolution.run()
 
     # pop1 = Population(BinaryChromosome, population_size, number_of_chromosomes, 5, a, b, sample_function)
