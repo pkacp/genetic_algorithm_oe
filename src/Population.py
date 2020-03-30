@@ -5,7 +5,8 @@ from src.Individual import Individual
 
 class Population:
     def __init__(self, chromosome_type, pop_size, chr_num_in_indiv, genes_in_chr, range_start, range_end,
-                 fitness_function, searching_value, crossover_type, elite_strategy_num, values=np.array([])):
+                 fitness_function, searching_value, crossover_type, crossover_prob, elite_strategy_num,
+                 values=np.array([])):
         self.chromosome_type = chromosome_type
         self.size = pop_size
         self.chr_num_in_indiv = chr_num_in_indiv
@@ -15,13 +16,12 @@ class Population:
         self.fitness_function = fitness_function
         self.searching_value = searching_value
         self.crossover_type = crossover_type
-        self.crossover_prob = 0.9
+        self.crossover_prob = crossover_prob
         # self.mutation_prob = 0.1
         # self.inversion_prob = 0.05
         self.elite_strategy_num = elite_strategy_num
         self.selected_individuals = np.array([])
         self._individuals = self.generate_population(values)
-        self.evaluated_population = self.__evaluate_population()
         self.best_individuals = self.__elite_strategy()
 
     def generate_population(self, values):
@@ -42,9 +42,6 @@ class Population:
         for individual in self._individuals:
             print(individual.get_decimal_value_of_chromosomes())
 
-    def __evaluate_population(self):
-        return self.evaluate_individuals(self._individuals, self.fitness_function)
-
     @staticmethod
     def evaluate_individuals(individuals_arr, fitness_function):
         individuals_eval = []
@@ -53,25 +50,26 @@ class Population:
         return np.array((individuals_arr, np.asarray(individuals_eval))).T
 
     def __elite_strategy(self):
-        return self.best_selection(self.elite_strategy_num, [])
+        return self.get_n_best_individuals(self.elite_strategy_num, self.searching_value, self._individuals,
+                                           self.fitness_function)
 
-    def get_best_individual(self):
-        best_value = self.searching_value(self.evaluated_population[:, 1])
-        print(best_value)
-        return np.where(self.evaluated_population[1] == best_value)
-
-    def select_individuals(self, selection_method, *args):
+    def select_individuals(self, selection_method, args):
         num_individuals_to_select = self.size - self.elite_strategy_num
         self.selected_individuals = selection_method(self, num_individuals_to_select, args)
 
     def best_selection(self, num_of_individuals_to_select, args):
-        sorted_evaluated_pop = self.evaluated_population[np.argsort(self.evaluated_population[:, 1])]
-        # print("sorted_evaluated_pop")
-        # print(sorted_evaluated_pop)
-        if self.searching_value == max:
-            return sorted_evaluated_pop[-num_of_individuals_to_select:][:, 0]
-        elif self.searching_value == min:
-            return sorted_evaluated_pop[:num_of_individuals_to_select][:, 0]
+        return Population.get_n_best_individuals(num_of_individuals_to_select, self.searching_value,
+                                                 self._individuals,
+                                                 self.fitness_function)
+
+    @staticmethod
+    def get_n_best_individuals(number_to_select, values_to_select, individuals, fitness_function):
+        evaluated_individuals = Population.evaluate_individuals(individuals, fitness_function)
+        sorted_evaluated_individuals = evaluated_individuals[np.argsort(evaluated_individuals[:, 1])]
+        if values_to_select == max:
+            return sorted_evaluated_individuals[-number_to_select:][:, 0]
+        elif values_to_select == min:
+            return sorted_evaluated_individuals[:number_to_select][:, 0]
         else:
             raise TypeError("Searching only for minimum or maximum value")
 
@@ -83,17 +81,18 @@ class Population:
         individuals_probability = []
         for i in range(evaluated_pop.shape[0]):
             individuals_probability.append(evaluated_pop[i][1] / sum_of_evaluated_individuals)
-        # print(individuals_probability) # TODO maybe working for negatives
+        # print(individuals_probability) # TODO working for negatives
         # if self.searching_value == min:
         #     individuals_probability = np.power(individuals_probability, 2)
         selected_individuals = np.random.choice(evaluated_pop[:, 0], num_of_individuals_to_select,
-                                                replace=False, p=individuals_probability)
+                                                p=individuals_probability)
         return selected_individuals
 
-    def ranking_selection(self):
-        return self._individuals[0]  # TODO ranking selection
+    def tournament_selection(self, num_of_individuals_to_select, args):
+        tournament_size = args[0]
+        print("tournament_size")
+        print(tournament_size)
 
-    def tournament_selection(self):
         return self._individuals[0]  # TODO tournament selection
 
     def crossover_selected_individuals(self):
@@ -144,4 +143,3 @@ class Population:
     @staticmethod
     def mutate_individuals(mutation_type, group_of_individuals):
         return 0
-
