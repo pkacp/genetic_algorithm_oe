@@ -42,8 +42,8 @@ if __name__ == '__main__':
     k = 5  # tournament size
 
     evolution = Evolution(epochs, population_size, a, b, accuracy, levy_function, min, BinaryChromosome,
-                          number_of_chromosomes, SelectionType.TOURNAMENT, [k], CrossingType.THREE_POINT, 0.9, None, 0,
-                          2)
+                          number_of_chromosomes, SelectionType.TOURNAMENT, [k], CrossingType.THREE_POINT, 0.9,
+                          MutationType.TWO_POINT, 1, 2)
     evolution.run()
 
     # pop1 = Population(BinaryChromosome, population_size, number_of_chromosomes, 5, a, b, sample_function)

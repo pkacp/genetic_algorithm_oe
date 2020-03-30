@@ -42,6 +42,10 @@ class Evolution:
             self.best_individuals = self.elite_strategy(new_population.best_individuals)
             new_population.select_individuals(self.selection_type, self.selection_args)
             new_individuals = new_population.crossover_selected_individuals()
+            print(new_individuals[0].get_decimal_value_of_chromosomes())
+            if self.mutation_prob > 0.0:
+                Population.mutate_individuals(new_individuals, self.mutation_type, self.mutation_prob)
+            print(new_individuals[0].get_decimal_value_of_chromosomes())
             print("-------------------------------------------")
             next_generation_individuals = np.append(new_individuals, self.best_individuals)
 

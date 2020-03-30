@@ -145,5 +145,8 @@ class Population:
         return crossed_individuals
 
     @staticmethod
-    def mutate_individuals(mutation_type, group_of_individuals):
-        return 0  # TODO mutation and inversion
+    def mutate_individuals(group_of_individuals, mutation_type, mutation_prob):
+        for individual in group_of_individuals:
+            if np.random.rand() < mutation_prob:
+                individual.mutate(mutation_type)
+
