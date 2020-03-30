@@ -83,6 +83,9 @@ class Population:
         individuals_probability = []
         for i in range(evaluated_pop.shape[0]):
             individuals_probability.append(evaluated_pop[i][1] / sum_of_evaluated_individuals)
+        # print(individuals_probability) # TODO maybe working for negatives
+        # if self.searching_value == min:
+        #     individuals_probability = np.power(individuals_probability, 2)
         selected_individuals = np.random.choice(evaluated_pop[:, 0], num_of_individuals_to_select,
                                                 replace=False, p=individuals_probability)
         return selected_individuals
@@ -137,3 +140,8 @@ class Population:
             new_i = individuals_to_cross[0].crossover(self.crossover_type, individuals_to_cross[1])
             crossed_individuals.append(new_i[0])
         return crossed_individuals
+
+    @staticmethod
+    def mutate_individuals(mutation_type, group_of_individuals):
+        return 0
+

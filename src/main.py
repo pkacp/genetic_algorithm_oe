@@ -1,3 +1,5 @@
+import math
+
 from src.BinaryChromosome import BinaryChromosome
 from src.Evolution import Evolution
 from src.Population import Population
@@ -9,19 +11,38 @@ import time
 
 if __name__ == '__main__':
     def sample_function(arg_arr):
-        return 2 * (arg_arr[0] * arg_arr[0]) + 5
+        return 2 * ((arg_arr[0] - 1) * (arg_arr[0] - 1)) + 5
 
 
-    a = -10
-    b = 10
-    accuracy = 6
-    epochs = 30
-    number_of_chromosomes = 1
-    population_size = 500
+    def mccormick_function(arg_arr):
+        return math.sin(arg_arr[0] + arg_arr[1]) + (arg_arr[0] - arg_arr[1]) * (arg_arr[0] - arg_arr[1]) - 1.5 * \
+               arg_arr[0] + 2.5 * arg_arr[1] + 1.0
 
-    # evolution = Evolution(epochs, population_size, a, b, accuracy, sample_function, min, BinaryChromosome,
-    #                       number_of_chromosomes, SelectionType.ROULETTE, (), CrossingType.THREE_POINT, 0.9, None, 0, 100)
-    # evolution.run()
+
+    # best working for now
+    def levy_function(arg_arr):
+        a = math.sin(3.0 * math.pi * arg_arr[0])
+        b = math.sin(3.0 * math.pi * arg_arr[1])
+        c = 1.0 + math.sin(2.0 * math.pi * arg_arr[1])
+        return math.pow(a, 2) + math.pow(arg_arr[0] - 1.0, 2) * (1.0 + math.pow(b, 2)) + \
+               math.pow(arg_arr[1] - 1.0, 2) * (1.0 + math.pow(c, 2))
+
+
+    def bukin_function(arg_arr):
+        return 100.0 * math.sqrt(math.fabs(arg_arr[1] - 0.01 * math.pow(arg_arr[0], 2))) + 0.01 * math.fabs(
+            arg_arr[0] + 10.0)
+
+
+    a = -15
+    b = 15
+    accuracy = 10
+    epochs = 20
+    number_of_chromosomes = 2
+    population_size = 1000
+
+    evolution = Evolution(epochs, population_size, a, b, accuracy, levy_function, min, BinaryChromosome,
+                          number_of_chromosomes, SelectionType.ROULETTE, (), CrossingType.THREE_POINT, 0.9, None, 0, 20)
+    evolution.run()
 
     # pop1 = Population(BinaryChromosome, population_size, number_of_chromosomes, 5, a, b, sample_function)
     #
@@ -32,14 +53,12 @@ if __name__ == '__main__':
     #
     # roulette = pop1.roulette_selection(2, min)
     #
-    i1 = Individual(BinaryChromosome, number_of_chromosomes, 6, a, b)
-    i2 = Individual(BinaryChromosome, number_of_chromosomes, 6, a, b)
-
-    i1.show()
-
-    print("-------------------------------------")
-    i1.mutation(MutationType.ONE_POINT)
-
-    i1.show()
-
-
+    # i1 = Individual(BinaryChromosome, number_of_chromosomes, 6, a, b)
+    # i2 = Individual(BinaryChromosome, number_of_chromosomes, 6, a, b)
+    #
+    # i1.show()
+    #
+    # print("-------------------------------------")
+    # i1.mutate(MutationType.ONE_POINT)
+    #
+    # i1.show()

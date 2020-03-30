@@ -41,17 +41,20 @@ class Evolution:
             # print(self.best_individuals.shape)
             new_population.select_individuals(self.selection_type)
             new_individuals = new_population.crossover_selected_individuals()
+            print("-------------------------------------------")
             next_generation_individuals = np.append(new_individuals, self.best_individuals)
 
         best = self.get_best_individuals(next_generation_individuals, 1)
         print("Final best")
         print(best[0].get_decimal_value_of_chromosomes())
 
+    # TODO merge that function with Population.best_selection()
+    # TODO make that unique selection prettier ;(
     def get_best_individuals(self, new_best_candidates, number_to_select):
-        individuals = np.append(self.best_individuals, new_best_candidates)
+        individuals = np.asarray(list(set(np.append(self.best_individuals, new_best_candidates))))
+        print(individuals.shape)
         evaluated_individuals = Population.evaluate_individuals(individuals, self.fitness_function)
         sorted_evaluated_individuals = evaluated_individuals[np.argsort(evaluated_individuals[:, 1])]
-        # TODO Return unique values by column with evaluation
         if self.searching_value == max:
             return sorted_evaluated_individuals[-number_to_select:][:, 0]
         elif self.searching_value == min:
