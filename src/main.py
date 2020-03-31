@@ -24,6 +24,7 @@ if __name__ == '__main__':
     # best working for now
     # prefered range = [-10, 10] min: f(1, 1) = 0
     def levy_function(arg_arr):
+        # print(arg_arr[0])
         a = math.sin(3.0 * math.pi * arg_arr[0])
         b = math.sin(3.0 * math.pi * arg_arr[1])
         c = 1.0 + math.sin(2.0 * math.pi * arg_arr[1])
@@ -47,23 +48,23 @@ if __name__ == '__main__':
 
 
     # parameters about evolution
-    epochs = 10
-    population_size = 10
+    epochs = 50
+    population_size = 1000
     range_start = -10
     range_end = 10
     accuracy = 6
-    function = sample_function
+    function = levy_function
     searching_value = min
     chromosome_type = BinaryChromosome
-    number_of_chromosomes = 1
+    number_of_chromosomes = 2
     selection_type = SelectionType.TOURNAMENT
-    selection_args = [2]  # depending from selection type(tournament size/number of individuals to pick)
+    selection_args = [10]  # depending from selection type(tournament size/number of individuals to pick)
     crossing_type = CrossingType.ONE_POINT
     crossing_prob = 0.9
     mutation_type = MutationType.TWO_POINT
     mutation_prob = 0.1
     inversion_prob = 0.05
-    keeping_elite_num = 0
+    keeping_elite_num = 30
 
     evolution = Evolution(epochs, population_size, range_start, range_end, accuracy, function, searching_value,
                           chromosome_type, number_of_chromosomes, selection_type, selection_args, crossing_type,

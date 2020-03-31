@@ -29,8 +29,8 @@ class DataAnalyzer:
                 evolution_writer.writerow(values_in_pop)
                 generation = generation + 1
         values = np.asarray(values)
-        # timestamp = int(time.time())
-        timestamp = 0
+        timestamp = int(time.time())
+        # timestamp = 0
         if self.do_best_val:
             plt.plot(values[:, 1], color='green')
             plt.title('Function best value in iteration')
