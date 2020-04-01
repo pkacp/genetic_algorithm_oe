@@ -1,4 +1,7 @@
+import copy
 import math
+
+import numpy as np
 
 from src.BinaryChromosome import BinaryChromosome
 from src.DataAnalyzer import DataAnalyzer
@@ -62,7 +65,7 @@ if __name__ == '__main__':
     crossing_type = CrossingType.ONE_POINT
     crossing_prob = 0.9
     mutation_type = MutationType.TWO_POINT
-    mutation_prob = 0.1
+    mutation_prob = 0.01
     inversion_prob = 0.05
     keeping_elite_num = 30
 
@@ -78,3 +81,23 @@ if __name__ == '__main__':
 
     print("_________________________________________")
     DataAnalyzer(evolution, function_value_from_iteration, mean_function_value_from_iteration, sd_from_iteration)
+
+    # b1 = BinaryChromosome(6, np.asarray([1, 0, 1, 0, 0, 1]))
+    # b2 = BinaryChromosome(6, np.asarray([1, 0, 0, 1, 1, 1]))
+    #
+    # print(b1.decode_val_to_decimal(-10, 10))
+    # print(b2.decode_val_to_decimal(-10, 10))
+    #
+    # i1 = Individual(BinaryChromosome, 2, 6, -10, 10, np.asarray([b1, b2]))
+    # print(i1.get_decimal_value_of_chromosomes())
+    # print(i1)
+    #
+    # best_in_pop = np.asarray([i1])
+    # bests = copy.deepcopy(best_in_pop[0])
+    #
+    # print(bests)
+    # print(bests.get_decimal_value_of_chromosomes())
+    # b1.n_bits_mutation(3, 'start')
+    #
+    # print(i1.get_decimal_value_of_chromosomes())
+    # print(bests[0].get_decimal_value_of_chromosomes())

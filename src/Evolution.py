@@ -1,3 +1,5 @@
+import copy
+
 import numpy as np
 import time
 
@@ -29,10 +31,13 @@ class Evolution:
         self.best_individuals = np.array([])
         self.number_of_genes = chromosome_type.calculate_chain_length(range_start, range_end, accuracy)
         self.time = 9999999999
+        self.bests_values = []
+        self.mean_values = []
+        self.sd_values = []
 
     def run(self):
         time_start = time.time()
-        next_generation_individuals = np.array([])
+        next_generation_individuals = np.array([False])
         for generation in range(self.epochs_num):
             new_population = Population(self.chromosome_type, self.population_size, self.chromosomes_number,
                                         self.number_of_genes, self.range_start, self.range_end, self.fitness_function,
@@ -40,7 +45,9 @@ class Evolution:
                                         self.elite_strategy_num,
                                         next_generation_individuals)
             self.population_set.add(new_population)
-            self.best_individuals = self.elite_strategy(new_population.best_individuals)
+            if self.elite_strategy_num > 0:
+                best_individuals = self.elite_strategy(new_population.best_individuals)
+                self.best_individuals = copy.deepcopy(best_individuals)
             new_population.select_individuals(self.selection_type, self.selection_args)
             new_individuals = new_population.crossover_selected_individuals()
             if self.mutation_prob > 0.0:
@@ -48,7 +55,16 @@ class Evolution:
             if self.inversion_prob > 0.0:
                 Population.inverse_individuals(new_individuals, self.inversion_prob)
             # print("-------------------------------------------")
-            next_generation_individuals = np.append(new_individuals, self.best_individuals)
+            if self.elite_strategy_num > 0:
+                individuals_with_elites = np.append(new_individuals, self.best_individuals)
+                next_generation_individuals = copy.deepcopy(individuals_with_elites)
+            else:
+                next_generation_individuals = copy.deepcopy(new_individuals)
+            print(next_generation_individuals.shape)
+            print("IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
+            for i in next_generation_individuals:
+                print(i.evaluate(self.fitness_function))
+            self.fill_values_for_charts(next_generation_individuals)
 
         best = Population.get_n_best_individuals(1, self.searching_value, next_generation_individuals,
                                                  self.fitness_function)
@@ -61,8 +77,30 @@ class Evolution:
         print(best[0].evaluate(self.fitness_function))
         print("evolution time: ")
         print(self.time)
+        print("BESTS")
+        print(self.bests_values)
+        print("MEAN")
+        print(self.mean_values)
+        print("STD")
+        print(self.sd_values)
 
     def elite_strategy(self, new_best_candidates):
         individuals = np.asarray(list(set(np.append(self.best_individuals, new_best_candidates))))
-        return Population.get_n_best_individuals(self.elite_strategy_num, self.searching_value, individuals,
-                                                 self.fitness_function)
+        print("===================================================")
+        for i in individuals:
+            print(i.get_decimal_value_of_chromosomes())
+            print(i.evaluate(self.fitness_function))
+        xxx = Population.get_n_best_individuals(self.elite_strategy_num, self.searching_value, individuals,
+                                                self.fitness_function)
+        print("::::::::::::::::::::::::::::::::::::::::::::::::::::")
+        for i in xxx:
+            print(i.get_decimal_value_of_chromosomes())
+            print(i.evaluate(self.fitness_function))
+        return xxx
+
+    def fill_values_for_charts(self, individuals):
+        evaluated_values = Population.evaluate_individuals(individuals, self.fitness_function)[:, 1]
+        print(evaluated_values)
+        self.bests_values.append(np.min(evaluated_values))
+        self.mean_values.append(np.mean(evaluated_values))
+        self.sd_values.append(np.std(evaluated_values))
