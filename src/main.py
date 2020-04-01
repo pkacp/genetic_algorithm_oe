@@ -1,17 +1,12 @@
-import copy
 import math
-
-import numpy as np
 
 from src.BinaryChromosome import BinaryChromosome
 from src.DataAnalyzer import DataAnalyzer
 from src.Evolution import Evolution
-from src.Population import Population
 from src.enums.SelectionType import SelectionType
 from src.enums.CrossingType import CrossingType
 from src.enums.MutationType import MutationType
-from src.Individual import Individual
-import time
+
 
 if __name__ == '__main__':
     def sample_function(arg_arr):
@@ -81,23 +76,3 @@ if __name__ == '__main__':
 
     print("_________________________________________")
     DataAnalyzer(evolution, function_value_from_iteration, mean_function_value_from_iteration, sd_from_iteration)
-
-    # b1 = BinaryChromosome(6, np.asarray([1, 0, 1, 0, 0, 1]))
-    # b2 = BinaryChromosome(6, np.asarray([1, 0, 0, 1, 1, 1]))
-    #
-    # print(b1.decode_val_to_decimal(-10, 10))
-    # print(b2.decode_val_to_decimal(-10, 10))
-    #
-    # i1 = Individual(BinaryChromosome, 2, 6, -10, 10, np.asarray([b1, b2]))
-    # print(i1.get_decimal_value_of_chromosomes())
-    # print(i1)
-    #
-    # best_in_pop = np.asarray([i1])
-    # bests = copy.deepcopy(best_in_pop[0])
-    #
-    # print(bests)
-    # print(bests.get_decimal_value_of_chromosomes())
-    # b1.n_bits_mutation(3, 'start')
-    #
-    # print(i1.get_decimal_value_of_chromosomes())
-    # print(bests[0].get_decimal_value_of_chromosomes())

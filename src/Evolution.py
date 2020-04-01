@@ -3,7 +3,6 @@ import copy
 import numpy as np
 import time
 
-from src.BinaryChromosome import BinaryChromosome
 from src.Population import Population
 
 
@@ -54,16 +53,11 @@ class Evolution:
                 Population.mutate_individuals(new_individuals, self.mutation_type, self.mutation_prob)
             if self.inversion_prob > 0.0:
                 Population.inverse_individuals(new_individuals, self.inversion_prob)
-            # print("-------------------------------------------")
             if self.elite_strategy_num > 0:
                 individuals_with_elites = np.append(new_individuals, self.best_individuals)
                 next_generation_individuals = copy.deepcopy(individuals_with_elites)
             else:
                 next_generation_individuals = copy.deepcopy(new_individuals)
-            print(next_generation_individuals.shape)
-            print("IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII")
-            for i in next_generation_individuals:
-                print(i.evaluate(self.fitness_function))
             self.fill_values_for_charts(next_generation_individuals)
 
         best = Population.get_n_best_individuals(1, self.searching_value, next_generation_individuals,
@@ -86,21 +80,11 @@ class Evolution:
 
     def elite_strategy(self, new_best_candidates):
         individuals = np.asarray(list(set(np.append(self.best_individuals, new_best_candidates))))
-        print("===================================================")
-        for i in individuals:
-            print(i.get_decimal_value_of_chromosomes())
-            print(i.evaluate(self.fitness_function))
-        xxx = Population.get_n_best_individuals(self.elite_strategy_num, self.searching_value, individuals,
+        return Population.get_n_best_individuals(self.elite_strategy_num, self.searching_value, individuals,
                                                 self.fitness_function)
-        print("::::::::::::::::::::::::::::::::::::::::::::::::::::")
-        for i in xxx:
-            print(i.get_decimal_value_of_chromosomes())
-            print(i.evaluate(self.fitness_function))
-        return xxx
 
     def fill_values_for_charts(self, individuals):
         evaluated_values = Population.evaluate_individuals(individuals, self.fitness_function)[:, 1]
-        print(evaluated_values)
         self.bests_values.append(np.min(evaluated_values))
         self.mean_values.append(np.mean(evaluated_values))
         self.sd_values.append(np.std(evaluated_values))

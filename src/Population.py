@@ -24,10 +24,6 @@ class Population:
         self._individuals = self.generate_population(values)
         best = self.__elite_strategy()
         self.best_individuals = copy.deepcopy(best)
-        print(self.best_individuals.__class__)
-        print("PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP")
-        for i in self.best_individuals:
-            print(i.evaluate(self.fitness_function))
         evaluated_starting = self.evaluate_individuals(self._individuals, self.fitness_function)
         self.evaluated_starting_individuals = copy.deepcopy(evaluated_starting)
 
