@@ -58,7 +58,7 @@ class MainPage(object):
         window.setFont(self.main_font)
         window.setMinimumSize(QtCore.QSize(420, 500))
         window.setMaximumSize(QtCore.QSize(420, 500))
-        window.setWindowTitle("Projekt_OE")
+        window.setWindowTitle("Projekt_1_OE - Kacprzak, Łyś")
         # Dialog.setSizeGripEnabled(False)
 
         self.StartButton.setGeometry(QtCore.QRect(150, 450, 93, 28))
@@ -201,20 +201,20 @@ class MainPage(object):
         _translate = QtCore.QCoreApplication.translate
         self.StartButton.setText(_translate("Dialog", "Start"))
         self.label.setText(_translate("Dialog", "Dokładność"))
-        self.label_2.setText(_translate("Dialog", "Il. populacji"))
-        self.label_3.setText(_translate("Dialog", "Ilosc er"))
+        self.label_2.setText(_translate("Dialog", "Liczebność populacji"))
+        self.label_3.setText(_translate("Dialog", "Liczba epok"))
         self.label_4.setText(_translate("Dialog", "Metoda selekcji"))
         self.label_5.setText(_translate("Dialog", "Krzyżowanie"))
         self.label_6.setText(_translate("Dialog", "Mutacja"))
         self.label_7.setText(_translate("Dialog", "Strat. Elitarnej"))
-        self.label_8.setText(_translate("Dialog", "Zakres x1 od"))
+        self.label_8.setText(_translate("Dialog", "Zakres x od"))
         self.label_9.setText(_translate("Dialog", "do"))
         # self.label_10.setText(_translate("Dialog", "do"))
         # self.label_11.setText(_translate("Dialog", "Zakres x2 od"))
         self.label_12.setText(_translate("Dialog", "Inwesja"))
         self.InversionCheckBox.setText(_translate("Dialog", "Aktualnie: Z inwesją"))
         self.EliteCheckBox.setText(_translate("Dialog", "Aktualnie: Procentowo"))
-        self.label_13.setText(_translate("Dialog", "Konfiguracja"))
+        self.label_13.setText(_translate("Dialog", "Optymalizacja - Funkcja Levyego"))
 
     def change_inversion(self):
         if self.InversionCheckBox.isChecked():

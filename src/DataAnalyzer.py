@@ -10,7 +10,7 @@ class DataAnalyzer:
         self.do_best_val = do_best_val
         self.do_mean = do_mean
         self.do_std = do_std
-        print("Some plotting")
+        # print("Some plotting")
         # self.plotting_and_saving_to_csv()
         self.list = []
         print(self.evolution.to_string())
@@ -35,7 +35,7 @@ class DataAnalyzer:
             self.list.append("function_value_in_iteration_" + str(timestamp) + ".png")
         if self.do_mean:
             plt.plot(self.evolution.mean_values, color='red')
-            plt.title('Function mean value in iteration')
+            plt.title(self.set_title('Function mean value in iteration'))
             plt.xlabel('Generation')
             plt.ylabel('Mean value')
             plt.savefig(f'../plots/mean_function_value_in_iteration_{timestamp}.png')
@@ -43,7 +43,7 @@ class DataAnalyzer:
             self.list.append("mean_function_value_in_iteration_" + str(timestamp) + ".png")
         if self.do_std:
             plt.plot(self.evolution.sd_values, color='blue')
-            plt.title('Function standard deviation in iteration')
+            plt.title(self.set_title('Function standard deviation in iteration'))
             plt.xlabel('Generation')
             plt.ylabel('Standard deviation value')
             plt.savefig(f'../plots/sd_in_iteration_{timestamp}.png')
@@ -52,7 +52,6 @@ class DataAnalyzer:
 
     def get_list(self):
         return self.list
-
 
     def set_title(self, current_title):
         return f"{current_title}\n"+"\n".join(wrap(f"{self.evolution.to_string()}", 140))

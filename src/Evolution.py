@@ -30,6 +30,7 @@ class Evolution:
         self.best_individuals = np.array([])
         self.number_of_genes = chromosome_type.calculate_chain_length(range_start, range_end, accuracy)
         self.time = 9999999999
+        self.best_individual = None
         self.best_individual_generation = self.epochs_num
         self.bests_values = []
         self.mean_values = []
@@ -61,6 +62,7 @@ class Evolution:
 
         best = Population.get_n_best_individuals(1, self.searching_value, next_generation_individuals,
                                                  self.fitness_function)
+        self.best_individual = best[0]
         time_end = time.time()
         self.time = time_end - time_start
 
@@ -85,7 +87,7 @@ class Evolution:
     def fill_values_for_charts(self, individuals, generation_number):
         evaluated_values = Population.evaluate_individuals(individuals, self.fitness_function)[:, 1]
         best_val = np.min(evaluated_values)
-        if generation_number > 0:
+        if generation_number > 0 and self.elite_strategy_num > 0:
             if best_val < self.searching_value(self.bests_values):
                 self.best_individual_generation = generation_number
         self.bests_values.append(best_val)
@@ -96,7 +98,10 @@ class Evolution:
         return f"Optimizing: {self.fitness_function.__name__}, generations: {self.epochs_num}, " \
                f"population size: {self.population_size}, " \
                f"selection method: {self.selection_type.__name__} : {self.selection_args[0]}, " \
-               f"crossing method: {self.crossover_type.__name__} : {self.crossover_prob} , " \
-               f"inversion probability: {self.inversion_prob}, number of selecting elites: {self.elite_strategy_num}," \
-               f" evolution time: {round(self.time,2)}s, " \
-               f"best individual found in {self.best_individual_generation} generation"
+               f"crossing method: {self.crossover_type.__name__} : {round(self.crossover_prob, 2)} , " \
+               f"inversion probability: {round(self.inversion_prob, 2)}," \
+               f" number of selecting elites: {self.elite_strategy_num}," \
+               f" evolution time: {round(self.time, 2)}s, " \
+               f"best individual found in {self.best_individual_generation}th generation " \
+               f"with value {self.best_individual.evaluate(self.fitness_function)} " \
+               f"in point {self.best_individual.get_decimal_value_of_chromosomes()}"

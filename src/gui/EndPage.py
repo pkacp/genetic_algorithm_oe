@@ -76,10 +76,10 @@ class EndPage(object):
         self.label_10.setText(_translate("window", "Odchylenia standardowego od kolejnej iteracji"))
         self.tab1Widget.setTabText(self.tab1Widget.indexOf(self.tab_2), _translate("form", "Wykres 2"))
         self.tab1Widget.setTabText(self.tab1Widget.indexOf(self.tab_3), _translate("form", "Wykres 3"))
-        self.label.setText(_translate("window", "Czas wykonwyania: XXX"))
+        self.label.setText(_translate("window", "Czas wykonywania: XXX"))
 
     def set_time(self, time):
-        time_text = "Czas wykonwyania: " + str(time) + "s."
+        time_text = "Czas wykonywania: " + str(time) + "s."
         self.label.setText(time_text)
 
     def set_fist_graph(self, name):
