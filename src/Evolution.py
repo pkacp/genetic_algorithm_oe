@@ -30,6 +30,7 @@ class Evolution:
         self.best_individuals = np.array([])
         self.number_of_genes = chromosome_type.calculate_chain_length(range_start, range_end, accuracy)
         self.time = 9999999999
+        self.best_individual_generation = self.epochs_num
         self.bests_values = []
         self.mean_values = []
         self.sd_values = []
@@ -45,8 +46,7 @@ class Evolution:
                                         next_generation_individuals)
             self.population_set.add(new_population)
             if self.elite_strategy_num > 0:
-                best_individuals = self.elite_strategy(new_population.best_individuals)
-                self.best_individuals = copy.deepcopy(best_individuals)
+                self.best_individuals = self.elite_strategy(new_population.best_individuals)
             new_population.select_individuals(self.selection_type, self.selection_args)
             new_individuals = new_population.crossover_selected_individuals()
             if self.mutation_prob > 0.0:
@@ -54,11 +54,10 @@ class Evolution:
             if self.inversion_prob > 0.0:
                 Population.inverse_individuals(new_individuals, self.inversion_prob)
             if self.elite_strategy_num > 0:
-                individuals_with_elites = np.append(new_individuals, self.best_individuals)
-                next_generation_individuals = copy.deepcopy(individuals_with_elites)
+                next_generation_individuals = np.append(new_individuals, self.best_individuals)
             else:
-                next_generation_individuals = copy.deepcopy(new_individuals)
-            self.fill_values_for_charts(next_generation_individuals)
+                next_generation_individuals = new_individuals
+            self.fill_values_for_charts(next_generation_individuals, generation)
 
         best = Population.get_n_best_individuals(1, self.searching_value, next_generation_individuals,
                                                  self.fitness_function)
@@ -81,10 +80,23 @@ class Evolution:
     def elite_strategy(self, new_best_candidates):
         individuals = np.asarray(list(set(np.append(self.best_individuals, new_best_candidates))))
         return Population.get_n_best_individuals(self.elite_strategy_num, self.searching_value, individuals,
-                                                self.fitness_function)
+                                                 self.fitness_function)
 
-    def fill_values_for_charts(self, individuals):
+    def fill_values_for_charts(self, individuals, generation_number):
         evaluated_values = Population.evaluate_individuals(individuals, self.fitness_function)[:, 1]
-        self.bests_values.append(np.min(evaluated_values))
+        best_val = np.min(evaluated_values)
+        if generation_number > 0:
+            if best_val < self.searching_value(self.bests_values):
+                self.best_individual_generation = generation_number
+        self.bests_values.append(best_val)
         self.mean_values.append(np.mean(evaluated_values))
         self.sd_values.append(np.std(evaluated_values))
+
+    def to_string(self):
+        return f"Optimizing: {self.fitness_function.__name__}, generations: {self.epochs_num}, " \
+               f"population size: {self.population_size}, " \
+               f"selection method: {self.selection_type.__name__} : {self.selection_args[0]}, " \
+               f"crossing method: {self.crossover_type.__name__} : {self.crossover_prob} , " \
+               f"inversion probability: {self.inversion_prob}, number of selecting elites: {self.elite_strategy_num}," \
+               f" evolution time: {round(self.time,2)}s, " \
+               f"best individual found in {self.best_individual_generation} generation"

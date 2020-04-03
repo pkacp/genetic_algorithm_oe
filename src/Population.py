@@ -22,10 +22,8 @@ class Population:
         self.elite_strategy_num = elite_strategy_num
         self.selected_individuals = np.array([])
         self._individuals = self.generate_population(values)
-        best = self.__elite_strategy()
-        self.best_individuals = copy.deepcopy(best)
-        evaluated_starting = self.evaluate_individuals(self._individuals, self.fitness_function)
-        self.evaluated_starting_individuals = copy.deepcopy(evaluated_starting)
+        self.best_individuals = self.__elite_strategy()
+        self.evaluated_starting_individuals = self.evaluate_individuals(self._individuals, self.fitness_function)
 
     def generate_population(self, values):
         if values.shape[0] == self.size:
