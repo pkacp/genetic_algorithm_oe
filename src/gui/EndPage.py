@@ -25,34 +25,34 @@ class EndPage(object):
     def setup_ui(self, form):
         form.setObjectName("form")
         form.setWindowModality(QtCore.Qt.ApplicationModal)
-        form.resize(640, 480)
-        form.setMinimumSize(QtCore.QSize(640, 480))
-        form.setMaximumSize(QtCore.QSize(640, 480))
+        form.resize(1000, 640)
+        form.setMinimumSize(QtCore.QSize(1000, 640))
+        form.setMaximumSize(QtCore.QSize(1000, 640))
         form.setFont(self.main_font)
-        self.tab1Widget.setGeometry(QtCore.QRect(10, 60, 621, 411))
+        self.tab1Widget.setGeometry(QtCore.QRect(10, 60, 961, 571))
         self.tab1Widget.setObjectName("tab1Widget")
         self.tab.setObjectName("tab")
-        self.graphicsView.setGeometry(QtCore.QRect(10, 40, 591, 331))
+        self.graphicsView.setGeometry(QtCore.QRect(10, 40, 931, 491))
         self.graphicsView.setObjectName("graphicsView")
-        self.label_2.setGeometry(QtCore.QRect(10, 10, 600, 21))
+        self.label_2.setGeometry(QtCore.QRect(180, 10, 231, 21))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
         self.tab1Widget.addTab(self.tab, "")
         self.tab_2.setObjectName("tab_2")
-        self.graphicsView_2.setGeometry(QtCore.QRect(10, 40, 591, 331))
+        self.graphicsView_2.setGeometry(QtCore.QRect(10, 40, 931, 491))
         self.graphicsView_2.setObjectName("graphicsView_2")
-        self.label_3.setGeometry(QtCore.QRect(10, 10, 600, 21))
+        self.label_3.setGeometry(QtCore.QRect(180, 10, 241, 21))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
         self.tab1Widget.addTab(self.tab_2, "")
 
-        self.graphicsView_3.setGeometry(QtCore.QRect(10, 40, 591, 331))
+        self.graphicsView_3.setGeometry(QtCore.QRect(10, 40, 931, 491))
         self.graphicsView_3.setObjectName("graphicsView_3")
-        self.label_10.setGeometry(QtCore.QRect(10, 10, 600, 21))
+        self.label_10.setGeometry(QtCore.QRect(180, 10, 241, 21))
         self.label_10.setFont(font)
         self.label_10.setObjectName("label_3")
         self.tab1Widget.addTab(self.tab_3, "")
@@ -85,18 +85,18 @@ class EndPage(object):
     def set_fist_graph(self, name):
         path_img = '../plots/' + name
         scene = QGraphicsScene()
-        scene.addPixmap(QPixmap(path_img).scaled(589, 329))
+        scene.addPixmap(QPixmap(path_img).scaled(921, 489))
         self.graphicsView.setScene(scene)
 
     def set_second_graph(self, name):
         path_img = '../plots/' + name
         scene = QGraphicsScene()
-        scene.addPixmap(QPixmap(path_img).scaled(589, 329))
+        scene.addPixmap(QPixmap(path_img).scaled(921, 489))
         self.graphicsView_2.setScene(scene)
 
     def set_third_graph(self, name):
         path_img = '../plots/' + name
         scene = QGraphicsScene()
-        scene.addPixmap(QPixmap(path_img).scaled(589, 329))
+        scene.addPixmap(QPixmap(path_img).scaled(921, 489))
         self.graphicsView_3.setScene(scene)
 

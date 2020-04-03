@@ -13,6 +13,7 @@ class DataAnalyzer:
         print("Some plotting")
         # self.plotting_and_saving_to_csv()
         self.list = []
+        print(self.evolution.to_string())
 
     def plotting_and_saving_to_csv(self):
         timestamp = int(time.time())
@@ -55,3 +56,4 @@ class DataAnalyzer:
 
     def set_title(self, current_title):
         return f"{current_title}\n"+"\n".join(wrap(f"{self.evolution.to_string()}", 140))
+
