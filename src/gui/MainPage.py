@@ -1,7 +1,15 @@
 import sys
 import time
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from src.BinaryChromosome import BinaryChromosome
+from src.DataAnalyzer import DataAnalyzer
+from src.Evolution import Evolution
+from src.Functions import Functions
+from src.enums.CrossingType import CrossingType
+from src.enums.MutationType import MutationType
+from src.enums.SelectionType import SelectionType
 from src.gui.EndPage import EndPage
 
 
@@ -11,16 +19,16 @@ class MainPage(object):
         self.main_font.setPointSize(7)
         self.MutationDoubleSpinBox = QtWidgets.QDoubleSpinBox(window)
         self.CrossDoubleSpinBox = QtWidgets.QDoubleSpinBox(window)
-        self.SelectionDoubleSpinBox = QtWidgets.QDoubleSpinBox(window)
+        self.SelectionSpinBox = QtWidgets.QSpinBox(window)
         self.label_13 = QtWidgets.QLabel(window)
         self.EliteCheckBox = QtWidgets.QCheckBox(window)
         self.InversionCheckBox = QtWidgets.QCheckBox(window)
-        self.InversionSpinBox = QtWidgets.QSpinBox(window)
+        self.InversionDoubleSpinBox = QtWidgets.QDoubleSpinBox(window)
         self.label_12 = QtWidgets.QLabel(window)
-        self.label_11 = QtWidgets.QLabel(window)
-        self.label_10 = QtWidgets.QLabel(window)
-        self.x2FromSpinBox = QtWidgets.QSpinBox(window)
-        self.x2ToSpinBox = QtWidgets.QSpinBox(window)
+        # self.label_11 = QtWidgets.QLabel(window)
+        # self.label_10 = QtWidgets.QLabel(window)
+        # self.x2FromSpinBox = QtWidgets.QSpinBox(window)
+        # self.x2ToSpinBox = QtWidgets.QSpinBox(window)
         self.x1ToSpinBox = QtWidgets.QSpinBox(window)
         self.label_9 = QtWidgets.QLabel(window)
         self.label_8 = QtWidgets.QLabel(window)
@@ -65,7 +73,9 @@ class MainPage(object):
         self.PopulationSpinBox.setGeometry(QtCore.QRect(110, 90, 91, 22))
         self.PopulationSpinBox.setToolTipDuration(-3)
         self.PopulationSpinBox.setMinimum(1)
+        self.PopulationSpinBox.setMaximum(10000)
         self.PopulationSpinBox.setObjectName("PopulationSpinBox")
+        self.PopulationSpinBox.valueChanged.connect(lambda: self.after_population_change())
 
         self.PrecisionSpinBox.setGeometry(QtCore.QRect(110, 50, 91, 22))
         self.PrecisionSpinBox.setToolTipDuration(-3)
@@ -100,7 +110,7 @@ class MainPage(object):
 
         self.MutationComboBox.setGeometry(QtCore.QRect(110, 250, 91, 21))
         self.MutationComboBox.setObjectName("MutationComboBox")
-        self.MutationComboBox.addItems(["Brzegowa", "Jedno punkt.", "Dwu punkt."])
+        self.MutationComboBox.addItems(["Jedno punkt.", "Dwu punkt.", "Brzegowa"])
 
         self.EliteSpinBox.setGeometry(QtCore.QRect(110, 330, 91, 22))
         self.EliteSpinBox.setToolTipDuration(-3)
@@ -127,29 +137,31 @@ class MainPage(object):
         self.x1ToSpinBox.setMinimum(self.x1FromSpinBox.value())
         self.x1ToSpinBox.setObjectName("x1ToSpinBox_3")
 
-        self.x2ToSpinBox.setGeometry(QtCore.QRect(190, 400, 51, 22))
-        self.x2ToSpinBox.setToolTipDuration(-3)
-        self.x2ToSpinBox.setMinimum(self.x2FromSpinBox.value())
-        self.x2ToSpinBox.setObjectName("x2ToSpinBox_4")
+        # self.x2ToSpinBox.setGeometry(QtCore.QRect(190, 400, 51, 22))
+        # self.x2ToSpinBox.setToolTipDuration(-3)
+        # self.x2ToSpinBox.setMinimum(self.x2FromSpinBox.value())
+        # self.x2ToSpinBox.setObjectName("x2ToSpinBox_4")
+        #
+        # self.x2FromSpinBox.setGeometry(QtCore.QRect(110, 400, 51, 22))
+        # self.x2FromSpinBox.setToolTipDuration(-3)
+        # self.x2FromSpinBox.setMinimum(-99)
+        # self.x2FromSpinBox.setObjectName("x2FromSpinBox_5")
+        # self.x2FromSpinBox.valueChanged.connect(lambda: self.update_minimum_x2())
 
-        self.x2FromSpinBox.setGeometry(QtCore.QRect(110, 400, 51, 22))
-        self.x2FromSpinBox.setToolTipDuration(-3)
-        self.x2FromSpinBox.setMinimum(-99)
-        self.x2FromSpinBox.setObjectName("x2FromSpinBox_5")
-        self.x2FromSpinBox.valueChanged.connect(lambda: self.update_minimum_x2())
-
-        self.label_10.setGeometry(QtCore.QRect(170, 400, 21, 21))
-        self.label_10.setObjectName("label_10")
-        self.label_11.setGeometry(QtCore.QRect(20, 400, 71, 21))
-        self.label_11.setObjectName("label_11")
+        # self.label_10.setGeometry(QtCore.QRect(170, 400, 21, 21))
+        # self.label_10.setObjectName("label_10")
+        # self.label_11.setGeometry(QtCore.QRect(20, 400, 71, 21))
+        # self.label_11.setObjectName("label_11")
 
         self.label_12.setGeometry(QtCore.QRect(20, 290, 91, 21))
         self.label_12.setObjectName("label_12")
 
-        self.InversionSpinBox.setGeometry(QtCore.QRect(110, 290, 91, 22))
-        self.InversionSpinBox.setToolTipDuration(-3)
-        self.InversionSpinBox.setMinimum(0)
-        self.InversionSpinBox.setObjectName("InwersionSpinBox_3")
+        self.InversionDoubleSpinBox.setGeometry(QtCore.QRect(110, 290, 91, 22))
+        self.InversionDoubleSpinBox.setToolTipDuration(-3)
+        self.InversionDoubleSpinBox.setMinimum(0)
+        self.InversionDoubleSpinBox.setObjectName("InwersionSpinBox_3")
+        self.InversionDoubleSpinBox.setMaximum(1.0)
+        self.InversionDoubleSpinBox.setSingleStep(0.01)
 
         self.InversionCheckBox.setGeometry(QtCore.QRect(210, 290, 170, 20))
         self.InversionCheckBox.setObjectName("InversionCheckBox")
@@ -168,10 +180,9 @@ class MainPage(object):
         self.label_13.setFont(font)
         self.label_13.setObjectName("label_13")
 
-        self.SelectionDoubleSpinBox.setGeometry(QtCore.QRect(220, 170, 62, 22))
-        self.SelectionDoubleSpinBox.setObjectName("SelectionDoubleSpinBox")
-        self.SelectionDoubleSpinBox.setMaximum(1.0)
-        self.SelectionDoubleSpinBox.setSingleStep(0.01)
+        self.SelectionSpinBox.setGeometry(QtCore.QRect(220, 170, 62, 22))
+        self.SelectionSpinBox.setObjectName("SelectionDoubleSpinBox")
+        self.SelectionSpinBox.setMaximum(self.PopulationSpinBox.value())
 
         self.CrossDoubleSpinBox.setGeometry(QtCore.QRect(220, 210, 62, 22))
         self.CrossDoubleSpinBox.setObjectName("CrossDoubleSpinBox")
@@ -198,8 +209,8 @@ class MainPage(object):
         self.label_7.setText(_translate("Dialog", "Strat. Elitarnej"))
         self.label_8.setText(_translate("Dialog", "Zakres x1 od"))
         self.label_9.setText(_translate("Dialog", "do"))
-        self.label_10.setText(_translate("Dialog", "do"))
-        self.label_11.setText(_translate("Dialog", "Zakres x2 od"))
+        # self.label_10.setText(_translate("Dialog", "do"))
+        # self.label_11.setText(_translate("Dialog", "Zakres x2 od"))
         self.label_12.setText(_translate("Dialog", "Inwesja"))
         self.InversionCheckBox.setText(_translate("Dialog", "Aktualnie: Z inwesją"))
         self.EliteCheckBox.setText(_translate("Dialog", "Aktualnie: Procentowo"))
@@ -207,17 +218,17 @@ class MainPage(object):
 
     def change_inversion(self):
         if self.InversionCheckBox.isChecked():
-            self.InversionSpinBox.setDisabled(True)
-            self.InversionSpinBox.setValue(0)
+            self.InversionDoubleSpinBox.setDisabled(True)
+            self.InversionDoubleSpinBox.setValue(0)
             self.InversionCheckBox.setText("Aktualnie: Bez inwesji")
         else:
-            self.InversionSpinBox.setDisabled(False)
+            self.InversionDoubleSpinBox.setDisabled(False)
             self.InversionCheckBox.setText("Aktualnie: Z inwesją")
 
     def change_elite(self):
         if self.EliteCheckBox.isChecked():
             self.EliteCheckBox.setText("Aktualnie: L. osobników")
-            self.EraSpinBox.setMaximum(200)
+            self.EraSpinBox.setMaximum(self.PopulationSpinBox.value())
         else:
             self.EliteCheckBox.setText("Aktualnie: Procentowo")
             self.EraSpinBox.setMaximum(100)
@@ -228,43 +239,91 @@ class MainPage(object):
     def update_minimum_x2(self):
         self.x2ToSpinBox.setMinimum(self.x2FromSpinBox.value())
 
-    def change_to_percent(self):
+    def update_max_selection(self):
+        self.SelectionSpinBox.setMaximum(self.PopulationSpinBox.value())
+
+    def get_elite(self):
         if not self.EliteCheckBox.isChecked():
-            return self.EliteSpinBox.value() / 100
+            return int(self.PopulationSpinBox.value() * (self.EliteSpinBox.value() / 100))
+        else:
+            return int(self.PopulationSpinBox.value())
+
+    def get_selection_type(self):
+        actual = self.SelectionMethodComboBox.currentText()
+        if actual == "Ruletki":
+            return SelectionType.ROULETTE
+        elif actual == "Najlepszych":
+            return SelectionType.BEST
+        else:
+            return SelectionType.TOURNAMENT
+
+    def get_mutation_type(self):
+        actual = self.MutationComboBox.currentText()
+        if actual == "Jedno punkt.":
+            return MutationType.ONE_POINT
+        elif actual == "Dwu punkt.":
+            return MutationType.TWO_POINT
+        else:
+            return MutationType.THREE_POINT
+
+    def get_cross_type(self):
+        actual = self.CrossComboBox.currentText()
+        if actual == "Jedno punkt.":
+            return CrossingType.ONE_POINT
+        elif actual == "Dwu punkt.":
+            return CrossingType.TWO_POINT
+        else:
+            return CrossingType.THREE_POINT
+
+    def after_population_change(self):
+        self.update_max_selection()
+        self.change_elite()
 
     def start(self):
-
-        precision = self.PrecisionSpinBox.value()
-        population = self.PopulationSpinBox.value()
-        era = self.EraSpinBox.value()
-
-        selection_type = self.SelectionMethodComboBox.currentText()
-        selection_val = self.SelectionDoubleSpinBox.value()
-
-        crossing_type = self.CrossComboBox.currentText()
-        crossing_val = self.CrossDoubleSpinBox.value()
-
-        mutation_val = self.MutationDoubleSpinBox.value()
-        mutation_type = self.MutationComboBox.currentText()
-
-        inversion = self.InversionSpinBox.value()
-        elite = self.change_to_percent()
-
-        x1From = self.x1FromSpinBox.value()
-        x1To = self.x1ToSpinBox.value()
-
-        x2From = self.x2FromSpinBox.value()
-        x2To = self.x2ToSpinBox.value()
-
         self.second_window = QtWidgets.QMainWindow()
+        selection_args = []
+        epochs = self.EraSpinBox.value()
+        population_size = self.PopulationSpinBox.value()
+        range_start = self.x1FromSpinBox.value()
+        range_end = self.x1ToSpinBox.value()
+        accuracy = self.PrecisionSpinBox.value()
+        function = Functions.levy_function
+        searching_value = min
+        chromosome_type = BinaryChromosome
+        number_of_chromosomes = 2
+        selection_type = self.get_selection_type()
+        selection_args.append(self.SelectionSpinBox.value())  # depending from selection type(tournament size/number
+        # of individuals to pick)
+        crossing_type = self.get_cross_type()
+        crossing_prob = self.CrossDoubleSpinBox.value()
+        mutation_type = self.get_mutation_type()
+        mutation_prob = self.MutationDoubleSpinBox.value()
+        inversion_prob = self.InversionDoubleSpinBox.value()
+        keeping_elite_num = self.get_elite()
+
+        evolution = Evolution(epochs, population_size, range_start, range_end, accuracy, function, searching_value,
+                              chromosome_type, number_of_chromosomes, selection_type, selection_args, crossing_type,
+                              crossing_prob, mutation_type, mutation_prob, inversion_prob, keeping_elite_num)
 
         start_time = time.time()
-        # todo dodać tu wywołanie itp.
-        finish_time = time.time() - start_time
+        evolution.run()
+
+        # parameters about plots
+        function_value_from_iteration = True
+        mean_function_value_from_iteration = True
+        sd_from_iteration = True
+
+        print("_________________________________________")
+        da = DataAnalyzer(evolution, function_value_from_iteration, mean_function_value_from_iteration,
+                          sd_from_iteration)
+        da.plotting_and_saving_to_csv()
+        pic = da.get_list()
+        finish_time = round(time.time() - start_time, 2)
 
         gui = EndPage(self.second_window)
-        gui.set_fist_graph("sample_graph.png")
-        gui.set_second_graph("sample_graph2.png")
+        gui.set_fist_graph(pic[0])
+        gui.set_second_graph(pic[1])
+        gui.set_third_graph(pic[2])
         gui.set_time(finish_time)
         self.second_window.show()
 

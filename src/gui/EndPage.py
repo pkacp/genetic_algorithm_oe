@@ -11,8 +11,11 @@ class EndPage(object):
         self.label = QtWidgets.QLabel(window)
         self.tab1Widget = QtWidgets.QTabWidget(window)
         self.tab_2 = QtWidgets.QWidget()
+        self.tab_3 = QtWidgets.QWidget()
         self.tab = QtWidgets.QWidget()
         self.label_3 = QtWidgets.QLabel(self.tab_2)
+        self.graphicsView_3 = QtWidgets.QGraphicsView(self.tab_3)
+        self.label_10 = QtWidgets.QLabel(self.tab_3)
 
         self.graphicsView_2 = QtWidgets.QGraphicsView(self.tab_2)
         self.label_2 = QtWidgets.QLabel(self.tab)
@@ -46,6 +49,14 @@ class EndPage(object):
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
         self.tab1Widget.addTab(self.tab_2, "")
+
+        self.graphicsView_3.setGeometry(QtCore.QRect(10, 40, 591, 331))
+        self.graphicsView_3.setObjectName("graphicsView_3")
+        self.label_10.setGeometry(QtCore.QRect(10, 10, 600, 21))
+        self.label_10.setFont(font)
+        self.label_10.setObjectName("label_3")
+        self.tab1Widget.addTab(self.tab_3, "")
+
         self.label.setGeometry(QtCore.QRect(20, 10, 281, 31))
         font = QtGui.QFont()
         font.setPointSize(12)
@@ -61,23 +72,31 @@ class EndPage(object):
         form.setWindowTitle(_translate("window", "Projek_OE_wyniki"))
         self.label_2.setText(_translate("window", "Wartości funkcji od kolejnej iteracji"))
         self.tab1Widget.setTabText(self.tab1Widget.indexOf(self.tab), _translate("form", "Wykres 1"))
-        self.label_3.setText(_translate("window", "Średniej wartości funkcji, odchylenia standardowego od kolejnej iteracji"))
+        self.label_3.setText(_translate("window", "Średniej wartości funkcji"))
+        self.label_10.setText(_translate("window", "Odchylenia standardowego od kolejnej iteracji"))
         self.tab1Widget.setTabText(self.tab1Widget.indexOf(self.tab_2), _translate("form", "Wykres 2"))
+        self.tab1Widget.setTabText(self.tab1Widget.indexOf(self.tab_3), _translate("form", "Wykres 3"))
         self.label.setText(_translate("window", "Czas wykonwyania: XXX"))
 
     def set_time(self, time):
-        time_text = "Czas wykonwyania: " + str(time) + " sekund"
+        time_text = "Czas wykonwyania: " + str(time) + "s."
         self.label.setText(time_text)
 
     def set_fist_graph(self, name):
-        path_img = '../image/' + name
+        path_img = '../plots/' + name
         scene = QGraphicsScene()
         scene.addPixmap(QPixmap(path_img).scaled(589, 329))
         self.graphicsView.setScene(scene)
 
     def set_second_graph(self, name):
-        path_img = '../image/' + name
+        path_img = '../plots/' + name
         scene = QGraphicsScene()
         scene.addPixmap(QPixmap(path_img).scaled(589, 329))
         self.graphicsView_2.setScene(scene)
+
+    def set_third_graph(self, name):
+        path_img = '../plots/' + name
+        scene = QGraphicsScene()
+        scene.addPixmap(QPixmap(path_img).scaled(589, 329))
+        self.graphicsView_3.setScene(scene)
 
