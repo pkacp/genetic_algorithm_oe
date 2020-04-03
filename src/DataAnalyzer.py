@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
-import numpy as np
 import csv
 import time
+from textwrap import wrap
 
 
 class DataAnalyzer:
@@ -11,24 +11,25 @@ class DataAnalyzer:
         self.do_mean = do_mean
         self.do_std = do_std
         print("Some plotting")
+        print(self.evolution.to_string())
         self.plotting_and_saving_to_csv()
 
     def plotting_and_saving_to_csv(self):
-        with open('../csv/datafile.csv', mode='w') as employee_file:
+        timestamp = int(time.time())
+        with open(f'../csv/datafile_{timestamp}.csv', mode='w') as employee_file:
             evolution_writer = csv.writer(employee_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             evolution_writer.writerow(['Generarion num', 'Best', 'Mean', 'Standard Deviation'])
-            generation_counter = 1
+            generation_counter = 0
             for best, mean, std in zip(self.evolution.bests_values, self.evolution.mean_values, self.evolution.sd_values):
                 evolution_writer.writerow([generation_counter, best, mean, std])
                 generation_counter = generation_counter+1
-        timestamp = int(time.time())
-        # timestamp = 0
         if self.do_best_val:
+            plt.figure(figsize=(12, 8))
             plt.plot(self.evolution.bests_values, color='green')
-            plt.title('Function best value in iteration')
+            plt.title(self.set_title('Function best value in iteration'))
             plt.xlabel('Generation')
             plt.ylabel('Best value')
-            plt.savefig(f'../plots/function_value_in_iteration_{timestamp}.png')
+            plt.savefig(f'../plots/function_value_in_iteration_{timestamp}.png', )
             plt.cla()
         if self.do_mean:
             plt.plot(self.evolution.mean_values, color='red')
@@ -41,6 +42,9 @@ class DataAnalyzer:
             plt.plot(self.evolution.sd_values, color='blue')
             plt.title('Function standard deviation in iteration')
             plt.xlabel('Generation')
-            plt.ylabel('Best value')
+            plt.ylabel('Standard deviation value')
             plt.savefig(f'../plots/sd_in_iteration_{timestamp}.png')
             plt.cla()
+
+    def set_title(self, current_title):
+        return f"{current_title}\n"+"\n".join(wrap(f"{self.evolution.to_string()}", 140))
