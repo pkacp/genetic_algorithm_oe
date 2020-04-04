@@ -14,7 +14,8 @@ from src.gui.EndPage import EndPage
 
 
 class MainPage(object):
-    def __init__(self):
+    def __init__(self, window):
+        self.second_window = QtWidgets.QMainWindow()
         self.main_font = QtGui.QFont()
         self.main_font.setPointSize(7)
 
@@ -285,7 +286,6 @@ class MainPage(object):
         self.change_elite()
 
     def start(self):
-        self.second_window = QtWidgets.QMainWindow()
         selection_args = []
         epochs = self.EraSpinBox.value()
         population_size = self.PopulationSpinBox.value()
@@ -343,7 +343,7 @@ class CheckBox(QtWidgets.QCheckBox):
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     window = QtWidgets.QMainWindow()
-    ui = MainPage()
+    ui = MainPage(window)
     ui.setup_ui(window)
     window.show()
     sys.exit(app.exec_())
