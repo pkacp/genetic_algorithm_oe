@@ -201,7 +201,7 @@ class MainPage(object):
         _translate = QtCore.QCoreApplication.translate
         self.StartButton.setText(_translate("Dialog", "Start"))
         self.label.setText(_translate("Dialog", "Dokładność"))
-        self.label_2.setText(_translate("Dialog", "Liczebność populacji"))
+        self.label_2.setText(_translate("Dialog", "Populacja"))
         self.label_3.setText(_translate("Dialog", "Liczba epok"))
         self.label_4.setText(_translate("Dialog", "Metoda selekcji"))
         self.label_5.setText(_translate("Dialog", "Krzyżowanie"))
