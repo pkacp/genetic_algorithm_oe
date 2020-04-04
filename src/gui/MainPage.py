@@ -17,37 +17,38 @@ class MainPage(object):
     def __init__(self):
         self.main_font = QtGui.QFont()
         self.main_font.setPointSize(7)
-        self.MutationDoubleSpinBox = QtWidgets.QDoubleSpinBox(window)
-        self.CrossDoubleSpinBox = QtWidgets.QDoubleSpinBox(window)
-        self.SelectionSpinBox = QtWidgets.QSpinBox(window)
-        self.label_13 = QtWidgets.QLabel(window)
-        self.EliteCheckBox = QtWidgets.QCheckBox(window)
-        self.InversionCheckBox = QtWidgets.QCheckBox(window)
-        self.InversionDoubleSpinBox = QtWidgets.QDoubleSpinBox(window)
-        self.label_12 = QtWidgets.QLabel(window)
-        # self.label_11 = QtWidgets.QLabel(window)
-        # self.label_10 = QtWidgets.QLabel(window)
-        # self.x2FromSpinBox = QtWidgets.QSpinBox(window)
-        # self.x2ToSpinBox = QtWidgets.QSpinBox(window)
-        self.x1ToSpinBox = QtWidgets.QSpinBox(window)
-        self.label_9 = QtWidgets.QLabel(window)
-        self.label_8 = QtWidgets.QLabel(window)
-        self.x1FromSpinBox = QtWidgets.QSpinBox(window)
-        self.label_7 = QtWidgets.QLabel(window)
-        self.EliteSpinBox = QtWidgets.QSpinBox(window)
-        self.MutationComboBox = QtWidgets.QComboBox(window)
-        self.label_6 = QtWidgets.QLabel(window)
-        self.CrossComboBox = QtWidgets.QComboBox(window)
-        self.label_5 = QtWidgets.QLabel(window)
-        self.label_4 = QtWidgets.QLabel(window)
-        self.SelectionMethodComboBox = QtWidgets.QComboBox(window)
-        self.label_3 = QtWidgets.QLabel(window)
-        self.label_2 = QtWidgets.QLabel(window)
-        self.label = QtWidgets.QLabel(window)
+
         self.PrecisionSpinBox = QtWidgets.QSpinBox(window)
         self.PopulationSpinBox = QtWidgets.QSpinBox(window)
         self.EraSpinBox = QtWidgets.QSpinBox(window)
+        self.SelectionMethodComboBox = QtWidgets.QComboBox(window)
+        self.SelectionSpinBox = QtWidgets.QSpinBox(window)
+        self.CrossComboBox = QtWidgets.QComboBox(window)
+        self.CrossDoubleSpinBox = QtWidgets.QDoubleSpinBox(window)
+        self.MutationComboBox = QtWidgets.QComboBox(window)
+        self.MutationDoubleSpinBox = QtWidgets.QDoubleSpinBox(window)
+        self.InversionCheckBox = CheckBox(window)
+        self.InversionDoubleSpinBox = QtWidgets.QDoubleSpinBox(window)
+        self.EliteCheckBox = CheckBox(window)
+        self.EliteSpinBox = QtWidgets.QSpinBox(window)
+        self.x1FromSpinBox = QtWidgets.QSpinBox(window)
+        self.x1ToSpinBox = QtWidgets.QSpinBox(window)
+        # self.x2FromSpinBox = QtWidgets.QSpinBox(window)
+        # self.x2ToSpinBox = QtWidgets.QSpinBox(window)
         self.StartButton = QtWidgets.QPushButton(window)
+        self.label_13 = QtWidgets.QLabel(window)
+        self.label_12 = QtWidgets.QLabel(window)
+        # self.label_11 = QtWidgets.QLabel(window)
+        # self.label_10 = QtWidgets.QLabel(window)
+        self.label_9 = QtWidgets.QLabel(window)
+        self.label_8 = QtWidgets.QLabel(window)
+        self.label_7 = QtWidgets.QLabel(window)
+        self.label_6 = QtWidgets.QLabel(window)
+        self.label_5 = QtWidgets.QLabel(window)
+        self.label_4 = QtWidgets.QLabel(window)
+        self.label_3 = QtWidgets.QLabel(window)
+        self.label_2 = QtWidgets.QLabel(window)
+        self.label = QtWidgets.QLabel(window)
 
     def setup_ui(self, window):
 
@@ -60,8 +61,10 @@ class MainPage(object):
         window.setMaximumSize(QtCore.QSize(420, 500))
         window.setWindowTitle("Projekt_1_OE - Kacprzak, Łyś")
         # Dialog.setSizeGripEnabled(False)
+        keyPressed = QtCore.pyqtSignal(QtCore.QEvent)
 
         self.StartButton.setGeometry(QtCore.QRect(150, 450, 93, 28))
+        self.StartButton.setDefault(True)
         self.StartButton.setObjectName("StartButton")
         self.StartButton.clicked.connect(lambda: self.start())
 
@@ -134,7 +137,7 @@ class MainPage(object):
 
         self.x1ToSpinBox.setGeometry(QtCore.QRect(190, 370, 51, 22))
         self.x1ToSpinBox.setToolTipDuration(-3)
-        self.x1ToSpinBox.setMinimum(self.x1FromSpinBox.value())
+        self.x1ToSpinBox.setMinimum(self.x1FromSpinBox.value()+1)
         self.x1ToSpinBox.setObjectName("x1ToSpinBox_3")
 
         # self.x2ToSpinBox.setGeometry(QtCore.QRect(190, 400, 51, 22))
@@ -228,16 +231,18 @@ class MainPage(object):
     def change_elite(self):
         if self.EliteCheckBox.isChecked():
             self.EliteCheckBox.setText("Aktualnie: L. osobników")
-            self.EraSpinBox.setMaximum(self.PopulationSpinBox.value())
+            self.EliteSpinBox.setValue(int((self.EliteSpinBox.value()*self.PopulationSpinBox.value())))
+            self.EliteSpinBox.setMaximum(self.PopulationSpinBox.value())
         else:
             self.EliteCheckBox.setText("Aktualnie: Procentowo")
-            self.EraSpinBox.setMaximum(100)
+            self.EliteSpinBox.setValue(int((self.EliteSpinBox.value()/self.PopulationSpinBox.value())*100))
+            self.EliteSpinBox.setMaximum(100)
 
     def update_minimum_x1(self):
-        self.x1ToSpinBox.setMinimum(self.x1FromSpinBox.value())
+        self.x1ToSpinBox.setMinimum(self.x1FromSpinBox.value()+1)
 
-    def update_minimum_x2(self):
-        self.x2ToSpinBox.setMinimum(self.x2FromSpinBox.value())
+    # def update_minimum_x2(self):
+    #     self.x2ToSpinBox.setMinimum(self.x2FromSpinBox.value())
 
     def update_max_selection(self):
         self.SelectionSpinBox.setMaximum(self.PopulationSpinBox.value())
@@ -326,6 +331,13 @@ class MainPage(object):
         gui.set_third_graph(pic[2])
         gui.set_time(finish_time)
         self.second_window.show()
+
+
+class CheckBox(QtWidgets.QCheckBox):
+    def keyPressEvent(self, event):
+        if event.key() in (QtCore.Qt.Key_Enter, QtCore.Qt.Key_Return):
+            self.click()
+        super(CheckBox, self).keyPressEvent(event)
 
 
 if __name__ == "__main__":
