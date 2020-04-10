@@ -55,4 +55,4 @@ class DataAnalyzer:
         return self.list
 
     def set_title(self, current_title):
-        return f"{current_title}\n" + "\n".join(wrap(f"{self.evolution.to_string()}", 140))
+        return f"{current_title}\n" + "\n".join(wrap(f"{self.evolution.to_string()}", 135))

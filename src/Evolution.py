@@ -96,7 +96,8 @@ class Evolution:
         self.sd_values.append(np.std(evaluated_values))
 
     def to_string(self):
-        return f"Optimizing: {self.fitness_function.__name__}, generations: {self.epochs_num}, " \
+        return f"Optimizing: {self.fitness_function.__name__} with {self.chromosome_type.__name__}, " \
+               f"generations: {self.epochs_num}, " \
                f"population size: {self.population_size}, " \
                f"selection method: {self.selection_type.__name__} : {self.selection_args[0]}, " \
                f"crossing method: {self.crossover_type.__name__} : {round(self.crossover_prob, 2)} , " \

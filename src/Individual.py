@@ -1,4 +1,7 @@
 import numpy as np
+
+from src.BinaryChromosome import BinaryChromosome
+from src.RealChromosome import RealChromosome
 from src.enums.MutationType import MutationType
 
 
@@ -41,17 +44,25 @@ class Individual:
         return new_individual_1, new_individual_2
 
     def mutate(self, mutation_type):
-        for chromosome in self.chromosomes:
-            if mutation_type == MutationType.ONE_POINT:
-                chromosome.n_bits_mutation(MutationType.ONE_POINT.value['n'], MutationType.ONE_POINT.value['place'])
-            elif mutation_type == MutationType.TWO_POINT:
-                chromosome.n_bits_mutation(MutationType.TWO_POINT.value['n'], MutationType.TWO_POINT.value['place'])
-            elif mutation_type == MutationType.THREE_POINT:
-                chromosome.n_bits_mutation(MutationType.THREE_POINT.value['n'], MutationType.THREE_POINT.value['place'])
-            elif mutation_type == MutationType.BORDER:
-                chromosome.n_bits_mutation(MutationType.BORDER.value['n'], MutationType.BORDER.value['place'])
-            else:
-                raise TypeError("Wrong mutation type")
+        if self.chromosome_type is BinaryChromosome:
+            for chromosome in self.chromosomes:
+                if mutation_type == MutationType.ONE_POINT:
+                    chromosome.n_bits_mutation(MutationType.ONE_POINT.value['n'], MutationType.ONE_POINT.value['place'])
+                elif mutation_type == MutationType.TWO_POINT:
+                    chromosome.n_bits_mutation(MutationType.TWO_POINT.value['n'], MutationType.TWO_POINT.value['place'])
+                elif mutation_type == MutationType.THREE_POINT:
+                    chromosome.n_bits_mutation(MutationType.THREE_POINT.value['n'],
+                                               MutationType.THREE_POINT.value['place'])
+                elif mutation_type == MutationType.BORDER:
+                    chromosome.n_bits_mutation(MutationType.BORDER.value['n'], MutationType.BORDER.value['place'])
+                else:
+                    raise TypeError("Wrong mutation type")
+        elif self.chromosome_type is RealChromosome:
+            if mutation_type == MutationType.EVEN:
+                mutation_place = np.random.randint(0, self.number_of_chromosomes)
+                self.chromosomes[mutation_place].even_mutation()
+            elif mutation_type == MutationType.INDEX_CHANGE:
+                self.chromosomes[0], self.chromosomes[1] = self.chromosomes[1], self.chromosomes[0]
 
     def invert(self):
         for chromosome in self.chromosomes:
@@ -60,7 +71,7 @@ class Individual:
     def get_decimal_value_of_chromosomes(self):
         decimal_values = []
         for chromosome in self.chromosomes:
-            decimal_values.append(chromosome.decode_val_to_decimal(self.range_start, self.range_end))
+            decimal_values.append(chromosome.decode_val_to_decimal())
         return decimal_values
 
     def evaluate(self, fitness_function):

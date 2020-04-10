@@ -19,9 +19,10 @@ class BinaryChromosome(Chromosome):
     def show(self):
         print(self.value, end='')
 
-    def decode_val_to_decimal(self, range_start, range_end) -> float:
+    def decode_val_to_decimal(self) -> float:
         m = len(self.value)
-        return range_start + self.binary_arr_to_int(self.value) * (range_end - range_start) / (pow(2, m) - 1)
+        return self.range_start + self.__binary_arr_to_int(self.value) * (self.range_end - self.range_start) / (
+                    pow(2, m) - 1)
 
     def calculate_number_of_genes(self):
         if self.range_start > self.range_end:
@@ -30,7 +31,7 @@ class BinaryChromosome(Chromosome):
             return np.math.ceil(np.math.log2(abs(self.range_end - self.range_start) * pow(10, self.accuracy)))
 
     @staticmethod
-    def binary_arr_to_int(binary_array) -> int:
+    def __binary_arr_to_int(binary_array) -> int:
         str_bit_number = ''
         for bit in list(binary_array):
             str_bit_number += (str(bit))
