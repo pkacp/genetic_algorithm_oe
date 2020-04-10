@@ -6,15 +6,16 @@ from src.Individual import Individual
 
 
 class Population:
-    def __init__(self, chromosome_type, pop_size, chr_num_in_indiv, genes_in_chr, range_start, range_end,
+    def __init__(self, chromosome_type, pop_size, num_of_chromosomes_in_individual, range_start, range_end, accuracy,
                  fitness_function, searching_value, crossover_type, crossover_prob, elite_strategy_num,
                  values=np.array([])):
         self.chromosome_type = chromosome_type
         self.size = pop_size
-        self.chr_num_in_indiv = chr_num_in_indiv
-        self.genes_in_chr = genes_in_chr
+        self.chr_num_in_indiv = num_of_chromosomes_in_individual
+        # self.genes_in_chr = genes_in_chr
         self.range_start = range_start
         self.range_end = range_end
+        self.accuracy = accuracy
         self.fitness_function = fitness_function
         self.searching_value = searching_value
         self.crossover_type = crossover_type
@@ -33,8 +34,8 @@ class Population:
         else:
             individuals = []
             for i in range(self.size):
-                individuals.append(Individual(self.chromosome_type, self.chr_num_in_indiv, self.genes_in_chr,
-                                              self.range_start, self.range_end))
+                individuals.append(Individual(self.chromosome_type, self.chr_num_in_indiv,
+                                              self.range_start, self.range_end, self.accuracy))
             return np.asarray(individuals)
 
     def show(self):

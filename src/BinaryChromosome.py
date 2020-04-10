@@ -3,8 +3,11 @@ import numpy as np
 
 
 class BinaryChromosome(Chromosome):
-    def __init__(self, genes_in_chr, value=np.array([False])):
-        self.number_of_genes = genes_in_chr
+    def __init__(self, range_start, range_end, accuracy, value=np.array([False])):
+        self.range_start = range_start
+        self.range_end = range_end
+        self.accuracy = accuracy
+        self.number_of_genes = self.calculate_number_of_genes()
         if value.any():
             self.value = value
         else:
@@ -20,12 +23,11 @@ class BinaryChromosome(Chromosome):
         m = len(self.value)
         return range_start + self.binary_arr_to_int(self.value) * (range_end - range_start) / (pow(2, m) - 1)
 
-    @staticmethod
-    def calculate_chain_length(range_start, range_end, acc):
-        if range_start > range_end:
+    def calculate_number_of_genes(self):
+        if self.range_start > self.range_end:
             raise ValueError('Wrong range')
         else:
-            return np.math.ceil(np.math.log2(abs(range_end - range_start) * pow(10, acc)))
+            return np.math.ceil(np.math.log2(abs(self.range_end - self.range_start) * pow(10, self.accuracy)))
 
     @staticmethod
     def binary_arr_to_int(binary_array) -> int:
@@ -50,8 +52,10 @@ class BinaryChromosome(Chromosome):
                 other_array_of_splits.append(self_split[i])
         new_first_chromosome_val = np.concatenate(self_array_of_splits)
         new_second_chromosome_val = np.concatenate(other_array_of_splits)
-        return BinaryChromosome(first_chromosome.number_of_genes, new_first_chromosome_val), BinaryChromosome(
-            second_chromosome.number_of_genes, new_second_chromosome_val)
+        return BinaryChromosome(first_chromosome.range_start, first_chromosome.range_end, first_chromosome.accuracy,
+                                new_first_chromosome_val), \
+               BinaryChromosome(second_chromosome.range_start, second_chromosome.range_end, second_chromosome.accuracy,
+                                new_second_chromosome_val)
 
     @staticmethod
     def one_point_crossover(first_chromosome, second_chromosome):

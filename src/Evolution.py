@@ -16,6 +16,7 @@ class Evolution:
         self.elite_strategy_num = elite_strategy_num
         self.range_start = range_start
         self.range_end = range_end
+        self.accuracy = accuracy
         self.fitness_function = fitness_function
         self.searching_value = searching_value
         self.chromosome_type = chromosome_type
@@ -28,7 +29,7 @@ class Evolution:
         self.mutation_prob = mutation_prob
         self.inversion_prob = inversion_prob
         self.best_individuals = np.array([])
-        self.number_of_genes = chromosome_type.calculate_chain_length(range_start, range_end, accuracy)
+        # self.number_of_genes = chromosome_type.calculate_number_of_genes(range_start, range_end, accuracy)
         self.time = 9999999999
         self.best_individual = None
         self.best_individual_generation = self.epochs_num
@@ -41,7 +42,7 @@ class Evolution:
         next_generation_individuals = np.array([False])
         for generation in range(self.epochs_num):
             new_population = Population(self.chromosome_type, self.population_size, self.chromosomes_number,
-                                        self.number_of_genes, self.range_start, self.range_end, self.fitness_function,
+                                        self.range_start, self.range_end, self.accuracy, self.fitness_function,
                                         self.searching_value, self.crossover_type, self.crossover_prob,
                                         self.elite_strategy_num,
                                         next_generation_individuals)
