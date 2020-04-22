@@ -24,7 +24,7 @@ class DataAnalyzer:
                 evolution_writer.writerow([generation_counter, best, mean, std])
                 generation_counter = generation_counter + 1
         if self.do_best_val:
-            plt.figure(figsize=(12, 8))
+            plt.figure(figsize=(12, 9))
             plt.plot(self.evolution.bests_values, color='green')
             plt.title(self.set_title('Function best value in iteration'))
             plt.xlabel('Generation')
@@ -33,7 +33,7 @@ class DataAnalyzer:
             plt.cla()
             self.list.append("function_value_in_iteration_" + str(timestamp) + ".png")
         if self.do_mean:
-            plt.figure(figsize=(12, 8))
+            plt.figure(figsize=(12, 9))
             plt.plot(self.evolution.mean_values, color='red')
             plt.title(self.set_title('Function mean value in iteration'))
             plt.xlabel('Generation')
@@ -42,7 +42,7 @@ class DataAnalyzer:
             plt.cla()
             self.list.append("mean_function_value_in_iteration_" + str(timestamp) + ".png")
         if self.do_std:
-            plt.figure(figsize=(12, 8))
+            plt.figure(figsize=(12, 9))
             plt.plot(self.evolution.sd_values, color='blue')
             plt.title(self.set_title('Function standard deviation in iteration'))
             plt.xlabel('Generation')
@@ -55,4 +55,4 @@ class DataAnalyzer:
         return self.list
 
     def set_title(self, current_title):
-        return f"{current_title}\n" + "\n".join(wrap(f"{self.evolution.to_string()}", 135))
+        return f"{current_title}\n" + "\n".join(wrap(f"{self.evolution.to_string()}", 130))

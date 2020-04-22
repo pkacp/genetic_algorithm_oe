@@ -96,11 +96,13 @@ class Evolution:
         self.sd_values.append(np.std(evaluated_values))
 
     def to_string(self):
-        return f"Optimizing: {self.fitness_function.__name__} with {self.chromosome_type.__name__}, " \
+        return f"Optimizing: {self.fitness_function.__name__} in range [{self.range_start}; {self.range_end}] " \
+               f"with {self.chromosome_type.__name__}, " \
                f"generations: {self.epochs_num}, " \
                f"population size: {self.population_size}, " \
                f"selection method: {self.selection_type.__name__} : {self.selection_args[0]}, " \
-               f"crossing method: {self.crossover_type.__name__} : {round(self.crossover_prob, 2)} , " \
+               f"crossing method: {self.crossover_type.__name__} : {round(self.crossover_prob, 2)}, " \
+               f"mutation method: {self.mutation_type} : {self.mutation_prob}, " \
                f"inversion probability: {round(self.inversion_prob, 2)}," \
                f" number of selecting elites: {self.elite_strategy_num}," \
                f" evolution time: {round(self.time, 2)}s, " \

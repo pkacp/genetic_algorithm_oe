@@ -38,20 +38,26 @@ if __name__ == '__main__':
 
     # d= 2, m = 10, prefered range x = [0, 4] min: f(2.20, 1.57) = -1.8013
     def michalewicz_function(arg_arr):
-        return -1.0 * (michalewicz_sum_element(arg_arr[0], 1) + michalewicz_sum_element(arg_arr[1], 2))
+        element_sum = lambda x, i: math.sin(x) * math.pow(math.sin(x * x * i), 20) / math.pi
+        return -1.0 * (element_sum(arg_arr[0], 1) + element_sum(arg_arr[1], 2))
 
 
-    def michalewicz_sum_element(x, i):
-        return math.sin(x) * math.pow(math.sin(x * x * i), 20) / math.pi
+    # prefered range x = [0, 14] min: f(2, 2) = 0
+    def damavandi_function(arg_arr):
+        x1 = arg_arr[0]
+        x2 = arg_arr[1]
+        return (1.0 - math.pow(math.fabs((math.sin(math.pi * (x1 - 2.0)) * math.sin(math.pi * (x2 - 2.0)))
+                                         / (math.pow(math.pi, 2) * (x1 - 2.0) * (x2 - 2.0))), 5)) * (
+                       2.0 + math.pow(x1 - 7.0, 2) + 2.0 * math.pow(x2 - 7.0, 2))
 
 
     # parameters about evolution
     epochs = 100
     population_size = 1000
-    range_start = -100
-    range_end = 100
+    range_start = 0
+    range_end = 14
     accuracy = 6
-    function = levy_function
+    function = damavandi_function
     searching_value = min
     chromosome_type = RealChromosome
     number_of_chromosomes = 2
@@ -61,7 +67,7 @@ if __name__ == '__main__':
     crossing_prob = 0.9
     mutation_type = MutationType.EVEN
     mutation_prob = 0.05
-    inversion_prob = 0.00
+    inversion_prob = 0.0  # if real chromosome keep it 0
     keeping_elite_num = 30
 
     evolution = Evolution(epochs, population_size, range_start, range_end, accuracy, function, searching_value,
