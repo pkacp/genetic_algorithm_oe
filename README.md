@@ -1,7 +1,7 @@
 # genetic_algorithm_oe
 
 Function optimizing with genetic algoritm, can optimize any function in any dimension, 
-can search for minimum and maximum in given range.
+can search for minimum and maximum in given range. Implemented binary and real chromosomes.
 
 ## Sample functions:
   * Levy function
